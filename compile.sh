@@ -1,0 +1,2 @@
+sudo docker run --rm -v $(pwd):/src ev3dev-cpp-compiler -Wall src/main.cpp src/motor.cpp src/position.cpp src/sensor.cpp src/diferential_drive.cpp -o main -std=c++14 -lm -pthread -lstdc++fs
+scp main robot@10.42.0.3:/home/robot/libc++/src/
