@@ -99,12 +99,51 @@ int main (){
 		return 1;
 	}
 
-  // use motors
-  Diferential_drive diferential_drive(motor_b, motor_c, 17.6, 9.5, false, false, Position(0, 0, 0));
-  //diferential_drive.go_to_position(Position(0, 50, 0), 1, 100, false);
-  diferential_drive.go_to_position(Position(50, 50, 0), 1, 100, false);
-  //diferential_drive.go_to_position(Position(50, 0, 0), 1, 100, false);
-  diferential_drive.go_to_position(Position(0, 0, 0), 1, 100, false);
+  
+  sensor_3.set_mode("COL-REFLECT");
+  sensor_2.set_mode("US-DIST-CM");
+  sensor_1.set_mode("IR_PROX");
+  int const white_minimum = 25;
+  while(sensor_4.get_value(0) == 0){
+   std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }
+  std::this_thread::sleep_for(std::chrono::milliseconds(5500));
+  motor_b.run_direct(100);
+  motor_c.run_direct(100, true);
+  motor_d.run_direct(30);
+  std::this_thread::sleep_for(std::chrono::milliseconds(400));
+  motor_d.run_direct(30, true);
+  motor_b.run_direct(60);
+  motor_c.run_direct(60);
+  std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now(); 
+  while(sensor_1.get_value(0) > 60  && sensor_2.get_value(0) > 200 && std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start).count() < 3000){
+	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }
+  while(true){
+    motor_b.run_direct(100);
+    motor_c.run_direct(100, true);
+    try{
+    if(sensor_3.get_value(0) > white_minimum){
+      motor_b.run_direct(100, true);
+      motor_c.run_direct(100);
+      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      while(sensor_4.get_value(0) == 1){
+      	motor_b.run_direct(100, true);
+    	motor_c.run_direct(100);
+      }
+      motor_b.run_direct(60);
+      motor_c.run_direct(60);
+      std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now(); 
+      while(sensor_1.get_value(0) > 60 && sensor_2.get_value(0) > 200 && std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start).count() < 3800){
+	std::this_thread::sleep_for(std::chrono::milliseconds(10));
+      }
+    }
+    }
+    catch(std::runtime_error& error){
+      std::cout << error.what() << std::endl;
+    }
+  }
+
 	return 0;
 }
 
