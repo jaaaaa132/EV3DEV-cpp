@@ -5,7 +5,7 @@
 
 void Motor::open_files(){
 	speed_file.open(std::string("/sys/class/tacho-motor/")        + directory + std::string("/speed_sp"),     std::fstream::out);
-  position_file.open(std::string("/sys/class/tacho-motor/")     + directory + std::string("/position"),     std::fstream::in);
+  position_file.open(std::string("/sys/class/tacho-motor/")     + directory + std::string("/position"));
   position_sp_file.open(std::string("/sys/class/tacho-motor/")  + directory + std::string("/position_sp"),  std::fstream::out);
   acceleration_file.open(std::string("/sys/class/tacho-motor/") + directory + std::string("/ramp_up_sp"),   std::fstream::out);
   stop_action_file.open(std::string("/sys/class/tacho-motor/")  + directory + std::string("/stop_action"),  std::fstream::out);
@@ -143,7 +143,7 @@ void Motor::set_position(int new_position){
     if(!are_files_opened()) throw std::runtime_error("cann't open files from: " + directory);
   }
 
-  position_file << new_position;
+  position_file << std::to_string(new_position);
   position_file.flush();
   return;
 }
