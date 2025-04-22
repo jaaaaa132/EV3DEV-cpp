@@ -31,6 +31,8 @@ class Diferential_drive {
 
     Position live_position();
 
-    void go_to_position (Position target_position, float precision, int default_motor_speed = 100, bool forward_only = false); // angle in position ignored
+    void go_to_position(Position target_position, float precision, int max_motor_speed = 100, bool forward_only = false); // angle in position ignored
+    void rotate_to_abs_angle(float angle, float precision, int max_speed = 100);
+    void follow_path(std::string file_path, float precision, float angle_precision, int max_speed = 100);
 };
 

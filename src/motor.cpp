@@ -142,7 +142,9 @@ void Motor::set_position(int new_position){
     open_files();
     if(!are_files_opened()) throw std::runtime_error("cann't open files from: " + directory);
   }
-
+  
+  position_file.clear();
+  position_file.seekp(0, std::ios::beg);
   position_file << std::to_string(new_position);
   position_file.flush();
   return;
