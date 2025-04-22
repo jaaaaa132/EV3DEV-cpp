@@ -1,6 +1,9 @@
 #include"diferential_drive.h"
 #include "position.h"
+#include <algorithm>
+#include <cmath>
 #include <stdexcept>
+#include <string>
 
 float Diferential_drive::normalize_angle(float angle){ // returns value in interval <pi ; -pi>
   while(angle > pi) angle -= pi*2;
@@ -88,7 +91,7 @@ Position Diferential_drive::live_position(){
   return position;
 }
 
-void Diferential_drive::go_to_position (Position target_position, float precision, int default_motor_speed, bool forward_only){
+void Diferential_drive::go_to_position (Position target_position, float precision, int max_motor_speed, bool forward_only){
   // comented out Derivative calculation
 
   //std::chrono::steady_clock::time_point last_time_measurement = std::chrono::steady_clock::now();
@@ -107,13 +110,13 @@ void Diferential_drive::go_to_position (Position target_position, float precisio
     //std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(new_time_measurement - last_time_measurement);
         
     // value ranges from 0 to 1 calculated using PD
-    const float P_angle_const = 2;
+    const float P_angle_const = 2.5;
     //const float D_angle_const = 0; // D not needed should be removed from equsion not tested if works
     const float P_distance_const = 4.5;
     float angular_modifier = 1 - fmin(1, fmax(0, abs(fmin(abs(goal_angle_diffrence),abs(pi - goal_angle_diffrence)) / (pi / 2) * P_angle_const /*+ (last_goal_angle_diffrence - goal_angle_diffrence) / time_span.count() * D_angle_const*/)));  
     float speed_modifier = fmin(1, fmax(0, goal_distance / P_distance_const));
         
-    int left_motor_speed = default_motor_speed * speed_modifier, right_motor_speed = default_motor_speed * speed_modifier;
+    int left_motor_speed = max_motor_speed * speed_modifier, right_motor_speed = max_motor_speed * speed_modifier;
         
     // righthand or lefthand turn
     if(goal_angle_diffrence > 0)  left_motor_speed *= angular_modifier;
@@ -124,14 +127,13 @@ void Diferential_drive::go_to_position (Position target_position, float precisio
     if(abs(goal_angle_diffrence) > pi / 2 && !forward_only){
       backwards = true;
     }
-    try{  // trying once again (already implemented in motor.cpp)
+    try{  
       left_motor->run_direct(left_motor_speed, left_motor_inverted ? !backwards : backwards);
       right_motor->run_direct(right_motor_speed, right_motor_inverted ? !backwards : backwards);
     }
     catch(std::runtime_error& error){
       std::cout << error.what() << std::endl;
-      // try again
-      try{
+      try{ // trying once again (already implemented in motor.cpp)
         left_motor->run_direct(left_motor_speed, left_motor_inverted ? !backwards : backwards);
         right_motor->run_direct(right_motor_speed, right_motor_inverted ? !backwards : backwards);
       }
@@ -154,6 +156,31 @@ void Diferential_drive::go_to_position (Position target_position, float precisio
       throw error;
   }
 } 
+
+void Diferential_drive::rotate_to_abs_angle(float angle, float precision, int max_speed){
+  float angle_dif = normalize_angle(position.angle - angle);
+  constexpr float P_const = 15;
+  while(abs(angle_dif) > precision){
+    int speed = std::fmin(1, std::fmax(-1, angle_dif * P_const));
+    std::cout << angle_dif << std::endl;
+    left_motor->run_direct(abs(speed) * max_speed, left_motor_inverted ? !(speed < 0) : speed < 0);
+    right_motor->run_direct(abs(speed) * max_speed, !right_motor_inverted ? !(speed < 0) : speed < 0);
+    angle_dif = normalize_angle(position.angle - angle);
+  }
+}
+
+void Diferential_drive::follow_path(std::string file_path, float precision, float angle_precision, int max_speed){
+  std::ifstream file;
+  file.open(file_path);
+  if(!file.is_open())  throw std::runtime_error("cann't open given path_file in Diferential_drive::follow_path()");
+
+  float x,y; 
+  while(file >> x){
+    if(file >> y) go_to_position(Position(x, y, 0), precision, max_speed, false);
+    else rotate_to_abs_angle(x, angle_precision, max_speed);
+  }    
+  file.close();
+}
 
 
 

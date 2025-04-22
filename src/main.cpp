@@ -102,9 +102,14 @@ int main (){
   // use motors
   Diferential_drive diferential_drive(motor_b, motor_c, 17.6, 9.5, false, false, Position(0, 0, 0));
   //diferential_drive.go_to_position(Position(0, 50, 0), 1, 100, false);
-  diferential_drive.go_to_position(Position(50, 50, 0), 1, 100, false);
+  //diferential_drive.go_to_position(Position(50, 50, 0), 1, 100, false);
   //diferential_drive.go_to_position(Position(50, 0, 0), 1, 100, false);
-  diferential_drive.go_to_position(Position(0, 0, 0), 1, 100, false);
-	return 0;
+  //diferential_drive.go_to_position(Position(0, 0, 0), 1, 100, false);
+  //diferential_drive.rotate_to_abs_angle(3.1415, 0.01745329 / 2, 100);
+  //diferential_drive.rotate_to_abs_angle(0, 0.01745329 / 2, 100);
+	diferential_drive.follow_path("/home/robot/libc++/src/test.path", 1, 0.01745329 /2, 100);
+  //motor_b.set_position(500);
+  //std::cout << motor_b.get_position() << std::endl;
+  return 0;
 }
 
