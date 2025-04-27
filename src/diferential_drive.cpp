@@ -169,6 +169,10 @@ void Diferential_drive::rotate_to_abs_angle(float angle, float precision, int ma
   }
 }
 
+void Diferential_drive::rotate_to_position(Position target, float precision, int max_speed){
+  rotate_to_abs_angle(atan2(Position(position).x - target.x, target.y - Position(position).y), precision, max_speed);
+}
+
 void Diferential_drive::follow_path(std::string file_path, float precision, float angle_precision, int max_speed){
   std::ifstream file;
   file.open(file_path);
@@ -181,8 +185,3 @@ void Diferential_drive::follow_path(std::string file_path, float precision, floa
   }    
   file.close();
 }
-
-
-
-
-
