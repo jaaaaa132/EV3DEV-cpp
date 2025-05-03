@@ -12,6 +12,7 @@ void Motor::open_files(){
   command_file.open(std::string("/sys/class/tacho-motor/")      + directory + std::string("/command"),      std::fstream::out);
   duty_cycle_file.open(std::string("/sys/class/tacho-motor/")   + directory + std::string("/duty_cycle_sp"),std::fstream::out);
   polarity_file.open(std::string("/sys/class/tacho-motor/")     + directory + std::string("/polarity"));
+  state_file.open(std::string("/sys/class/tacho-motor/")        + directory + std::string("/state"),        std::fstream::in); 
 }
 
 void Motor::debug_output_file(std::string file_name){
@@ -40,7 +41,8 @@ bool Motor::are_files_opened(){
           check_file(stop_action_file, "stop_action_file") &&
 	        check_file(command_file, "command_file") &&	
           check_file(duty_cycle_file, "duty_cycle_file") &&
-	        check_file(polarity_file, "polarity_file");
+	        check_file(polarity_file, "polarity_file") &&
+          check_file(state_file, "state_file");
 }
 
 bool Motor::is_connected(){
@@ -122,6 +124,20 @@ void Motor::run_direct(int duty_cycle, bool inverted){
   command_file.flush();
 }
 
+std::string Motor::get_state(){
+  if(!are_files_opened()){
+    open_files();
+		if(!are_files_opened()) throw std::runtime_error("cann't open files from: " + directory);
+  }
+  
+  std::string state;
+  state_file.clear(); // Clear any stream error flags.
+  state_file.seekg(0, std::ios::beg); 
+  state_file >> state; 
+
+  return state;
+}
+
 int Motor::get_position(){
   if(!are_files_opened()){
     open_files();
@@ -132,9 +148,8 @@ int Motor::get_position(){
   position_file.clear(); // Clear any stream error flags.
   position_file.seekg(0, std::ios::beg); 
   position_file >> pos; 
- 
-  // to be fixed: reliaes on position to be set to high number at start
-  return abs(pos);
+
+  return pos;
 }
 
 void Motor::set_position(int new_position){

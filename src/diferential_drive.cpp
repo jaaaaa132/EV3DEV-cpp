@@ -2,6 +2,7 @@
 #include "position.h"
 #include <algorithm>
 #include <cmath>
+#include <fstream>
 #include <stdexcept>
 #include <string>
 
@@ -16,14 +17,15 @@ void Diferential_drive::track_position(){
   int left_motor_last_pos, right_motor_last_pos;
 
   try{ // trying once again (already implemented in motor.cpp)
-    left_motor_last_pos = left_motor->get_position();
-    right_motor_last_pos = right_motor->get_position();
+    // relies on setting position to high value
+    left_motor_last_pos = abs(left_motor->get_position());
+    right_motor_last_pos = abs(right_motor->get_position());
   }
   catch(std::runtime_error& error){
     std::cout << error.what() << std::endl;
     try{
-      left_motor_last_pos = left_motor->get_position();
-      right_motor_last_pos = right_motor->get_position();
+      left_motor_last_pos = abs(left_motor->get_position());
+      right_motor_last_pos = abs(right_motor->get_position());
     }
     catch(std::runtime_error& error){
       std::cout << "rethrowing error from tracking_position() in Diferential_drive: " << error.what() << std::endl;
@@ -36,14 +38,14 @@ void Diferential_drive::track_position(){
     int left_motor_pos, right_motor_pos;
     
     try{ // trying once again (already implemented in motor.cpp) 
-      left_motor_pos = left_motor->get_position();
-      right_motor_pos = right_motor->get_position();
+      left_motor_pos = abs(left_motor->get_position());
+      right_motor_pos = abs(right_motor->get_position());
     }
     catch(std::runtime_error& error){
       std::cout << error.what() << std::endl;
       try{
-        left_motor_pos = left_motor->get_position();
-        right_motor_pos = right_motor->get_position();
+        left_motor_pos = abs(left_motor->get_position());
+        right_motor_pos = abs(right_motor->get_position());
       }
       catch(std::runtime_error& error){
         std::cout << "rethrowing error from tracking_position() in Diferential_drive: " << error.what() << std::endl;
@@ -91,7 +93,7 @@ Position Diferential_drive::live_position(){
   return position;
 }
 
-void Diferential_drive::go_to_position (Position target_position, float precision, int max_motor_speed, bool forward_only){
+void Diferential_drive::go_to_position_curve(Position target_position, float precision, int max_motor_speed, bool forward_only){
   // comented out Derivative calculation
 
   //std::chrono::steady_clock::time_point last_time_measurement = std::chrono::steady_clock::now();
@@ -138,7 +140,7 @@ void Diferential_drive::go_to_position (Position target_position, float precisio
         right_motor->run_direct(right_motor_speed, right_motor_inverted ? !backwards : backwards);
       }
       catch(std::runtime_error& error){
-        std::cout << "rethrowing error from go_to_position in Diferential_drive: " << error.what() << std::endl;
+        std::cout << "rethrowing error from go_to_position_curve in Diferential_drive: " << error.what() << std::endl;
         throw error;
       }
     }
@@ -152,14 +154,34 @@ void Diferential_drive::go_to_position (Position target_position, float precisio
     right_motor->run(0, 0);
   }
   catch(std::runtime_error& error){
-    std::cout << "rethrowing error from go_to_position in Diferential_drive: " << error.what() << std::endl;
+    std::cout << "rethrowing error from go_to_position_curve in Diferential_drive: " << error.what() << std::endl;
       throw error;
   }
 } 
 
+void Diferential_drive::go_to_position_straight(Position target_position, float angle_precision, int max_motor_speed, bool forward_only){
+  bool backwards = false;
+  if(!forward_only && abs(normalize_angle(atan2(Position(position).x - target_position.x, target_position.y - Position(position).y) - Position(position).angle)) > pi/2 ){
+    rotate_to_position(target_position, angle_precision, max_motor_speed, pi);
+    backwards = true;
+  }
+  else{
+    rotate_to_position(target_position, angle_precision, max_motor_speed);
+    backwards = false;
+  }
+  float target_distance = sqrt(pow(target_position.x - position.x, 2) + pow(target_position.y - position.y, 2)) * (backwards ? -1 : 1);
+  float target_distance_wheele_deg = target_distance / wheel_diameter * 360;
+  left_motor->run_to_rel_pos(target_distance_wheele_deg * (left_motor_inverted ? -1 : 1), max_motor_speed * 10.5);
+  right_motor->run_to_rel_pos(target_distance_wheele_deg * (right_motor_inverted ? -1 : 1), max_motor_speed * 10.5);
+  std::cout << (target_distance_wheele_deg * (right_motor_inverted ? -1 : 1)) << std::endl;
+  while(left_motor->get_state() == "running" || right_motor->get_state() == "running"){
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }
+}
+
 void Diferential_drive::rotate_to_abs_angle(float angle, float precision, int max_speed){
   float angle_dif = normalize_angle(position.angle - angle);
-  constexpr float P_const = 15;
+  constexpr float P_const = 25;
   while(abs(angle_dif) > precision){
     int speed = std::fmin(1, std::fmax(-1, angle_dif * P_const));
     std::cout << angle_dif << std::endl;
@@ -167,21 +189,36 @@ void Diferential_drive::rotate_to_abs_angle(float angle, float precision, int ma
     right_motor->run_direct(abs(speed) * max_speed, !right_motor_inverted ? !(speed < 0) : speed < 0);
     angle_dif = normalize_angle(position.angle - angle);
   }
+
+  left_motor->run_direct(0);
+  right_motor->run_direct(0);
 }
 
-void Diferential_drive::rotate_to_position(Position target, float precision, int max_speed){
-  rotate_to_abs_angle(atan2(Position(position).x - target.x, target.y - Position(position).y), precision, max_speed);
+void Diferential_drive::rotate_to_position(Position target, float precision, int max_speed, float offset){
+  rotate_to_abs_angle(atan2(Position(position).x - target.x, target.y - Position(position).y) + offset, precision, max_speed);
 }
 
-void Diferential_drive::follow_path(std::string file_path, float precision, float angle_precision, int max_speed){
+void Diferential_drive::follow_path_curve(std::string file_path, float precision, float angle_precision, int max_speed){
   std::ifstream file;
   file.open(file_path);
-  if(!file.is_open())  throw std::runtime_error("cann't open given path_file in Diferential_drive::follow_path()");
+  if(!file.is_open())  throw std::runtime_error("cann't open given path_file in Diferential_drive::follow_path_curve()");
 
   float x,y; 
   while(file >> x){
-    if(file >> y) go_to_position(Position(x, y, 0), precision, max_speed, false);
+    if(file >> y) go_to_position_curve(Position(x, y, 0), precision, max_speed, false);
     else rotate_to_abs_angle(x, angle_precision, max_speed);
   }    
   file.close();
+}
+
+void Diferential_drive::follow_path_straight(std::string file_path, float precision, float angle_precision, int max_speed){
+  std::ifstream file;
+  file.open(file_path);
+  if(!file.is_open())  throw std::runtime_error("cann't open given path_file in Diferential_drive::follow_path_straight()");
+
+  float x,y;
+  while(file >> x){
+    if(file >> y) go_to_position_straight(Position(x, y, 0), precision, max_speed, false);
+    else rotate_to_abs_angle(x, angle_precision, max_speed);
+  }
 }

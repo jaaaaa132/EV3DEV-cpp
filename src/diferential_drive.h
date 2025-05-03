@@ -12,7 +12,7 @@ class Diferential_drive {
 
   protected:
     const float pi = 3.14159;
-    Motor* left_motor;
+  Motor* left_motor;
     Motor* right_motor;
     bool left_motor_inverted;
     bool right_motor_inverted;
@@ -31,9 +31,11 @@ class Diferential_drive {
 
     Position live_position();
 
-    void go_to_position(Position target_position, float precision, int max_motor_speed = 100, bool forward_only = false); // angle in position ignored
+    void go_to_position_curve(Position target_position, float precision, int max_motor_speed = 100, bool forward_only = false); // angle in position is ignored
+    void go_to_position_straight(Position target_position, float angle_precision, int max_motor_speed = 100, bool forward_only = false); // angle in position is ignored
     void rotate_to_abs_angle(float angle, float precision, int max_speed = 100);
-    void rotate_to_position(Position target, float precision, int max_speed = 100);
-    void follow_path(std::string file_path, float precision, float angle_precision, int max_speed = 100);
+    void rotate_to_position(Position target, float precision, int max_speed = 100, float offset = 0); // angle in position is ignored
+    void follow_path_curve(std::string file_path, float precision, float angle_precision, int max_speed = 100);
+    void follow_path_straight(std::string file_path, float precision, float angle_precision, int max_speed = 100);
 };
 

@@ -2,7 +2,6 @@
 
 #include<iostream>
 #include<fstream>
-#include<sstream>
 
 class Motor{
 private:
@@ -18,6 +17,7 @@ protected:
 	std::ofstream command_file;
   std::ofstream duty_cycle_file;
   std::fstream polarity_file;
+  std::ifstream state_file;
   
   void debug_output_file(std::string file_name);
   template<typename FileType> bool check_file(FileType& file, std::string debug_name = "not specified");
@@ -31,6 +31,7 @@ public:
   void run_to_abs_pos(int position, int speed, std::string stop_action = "hold");
   void run_to_rel_pos(int position, int speed, std::string stop_action = "hold");
   void run_direct(int duty_cycle, bool inverted = false);
+  std::string get_state();
   int get_position();
   void set_position(int new_position);
 };
