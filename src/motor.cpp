@@ -2,6 +2,7 @@
 #include <cmath>
 #include <fstream>
 #include <stdexcept>
+#include <string>
 
 void Motor::open_files(){
 	speed_file.open(std::string("/sys/class/tacho-motor/")        + directory + std::string("/speed_sp"),     std::fstream::out);
@@ -12,7 +13,8 @@ void Motor::open_files(){
   command_file.open(std::string("/sys/class/tacho-motor/")      + directory + std::string("/command"),      std::fstream::out);
   duty_cycle_file.open(std::string("/sys/class/tacho-motor/")   + directory + std::string("/duty_cycle_sp"),std::fstream::out);
   polarity_file.open(std::string("/sys/class/tacho-motor/")     + directory + std::string("/polarity"));
-  state_file.open(std::string("/sys/class/tacho-motor/")        + directory + std::string("/state"),        std::fstream::in); 
+  state_file.open(std::string("/sys/class/tacho-motor/")        + directory + std::string("/state"),        std::fstream::in);
+  time_file.open(std::string("/sys/class/tacho-motor/")         + directory + std::string("/time_sp"),       std::fstream::out);
 }
 
 void Motor::debug_output_file(std::string file_name){
@@ -42,7 +44,8 @@ bool Motor::are_files_opened(){
 	        check_file(command_file, "command_file") &&	
           check_file(duty_cycle_file, "duty_cycle_file") &&
 	        check_file(polarity_file, "polarity_file") &&
-          check_file(state_file, "state_file");
+          check_file(state_file, "state_file") &&
+          check_file(time_file, "time_file");
 }
 
 bool Motor::is_connected(){
@@ -101,6 +104,35 @@ void Motor::run_to_rel_pos(int position, int speed, std::string stop_action){
   stop_action_file << stop_action;
   stop_action_file.flush();
 	command_file << "run-to-rel-pos";
+	command_file.flush();
+}
+
+void Motor::run_for_time(int time_ms, int speed, std::string stop_action){
+ if(!are_files_opened()){
+    open_files();
+		if(!are_files_opened()) throw std::runtime_error("cann't open files from: " + directory);
+  }
+	
+  // run motor for time
+  time_file << std::to_string(time_ms);
+  time_file.flush();
+	speed_file << std::to_string(speed);
+	speed_file.flush();
+  stop_action_file << stop_action;
+  stop_action_file.flush();
+	command_file << "run-timed";
+	command_file.flush(); 
+}
+
+void Motor::stop(std::string stop_action){
+  if(!are_files_opened()){
+    open_files();
+		if(!are_files_opened()) throw std::runtime_error("cann't open files from: " + directory);
+  }
+
+  stop_action_file << stop_action;
+  stop_action_file.flush();
+  command_file << "stop";
 	command_file.flush();
 }
 

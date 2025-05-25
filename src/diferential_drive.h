@@ -12,7 +12,7 @@ class Diferential_drive {
 
   protected:
     const float pi = 3.14159;
-  Motor* left_motor;
+    Motor* left_motor;
     Motor* right_motor;
     bool left_motor_inverted;
     bool right_motor_inverted;
