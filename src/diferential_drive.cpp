@@ -148,10 +148,14 @@ void Diferential_drive::go_to_position_curve(Position target_position, float pre
     //last_goal_distance = goal_distance;
     //last_goal_angle_diffrence = goal_angle_diffrence;
   }
-  // stop motors - should be changed to stop command
+  
   try{
-    left_motor->run(0, 0);
-    right_motor->run(0, 0);
+    // resets polarity
+    left_motor->run_direct(0);
+    right_motor->run_direct(0);
+    
+    left_motor->stop();
+    right_motor->stop();;
   }
   catch(std::runtime_error& error){
     std::cout << "rethrowing error from go_to_position_curve in Diferential_drive: " << error.what() << std::endl;
@@ -190,8 +194,12 @@ void Diferential_drive::rotate_to_abs_angle(float angle, float precision, int ma
     angle_dif = normalize_angle(position.angle - angle);
   }
 
+  //resets polarity
   left_motor->run_direct(0);
   right_motor->run_direct(0);
+
+  left_motor->stop();
+  right_motor->stop();
 }
 
 void Diferential_drive::rotate_to_position(Position target, float precision, int max_speed, float offset){
@@ -211,14 +219,14 @@ void Diferential_drive::follow_path_curve(std::string file_path, float precision
   file.close();
 }
 
-void Diferential_drive::follow_path_straight(std::string file_path, float precision, float angle_precision, int max_speed){
+void Diferential_drive::follow_path_straight(std::string file_path, float angle_precision, int max_speed){
   std::ifstream file;
   file.open(file_path);
   if(!file.is_open())  throw std::runtime_error("cann't open given path_file in Diferential_drive::follow_path_straight()");
 
   float x,y;
   while(file >> x){
-    if(file >> y) go_to_position_straight(Position(x, y, 0), precision, max_speed, false);
+    if(file >> y) go_to_position_straight(Position(x, y, 0), angle_precision, max_speed, false);
     else rotate_to_abs_angle(x, angle_precision, max_speed);
   }
 }

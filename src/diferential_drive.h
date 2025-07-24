@@ -36,6 +36,6 @@ class Diferential_drive {
     void rotate_to_abs_angle(float angle, float precision, int max_speed = 100);
     void rotate_to_position(Position target, float precision, int max_speed = 100, float offset = 0); // angle in position is ignored
     void follow_path_curve(std::string file_path, float precision, float angle_precision, int max_speed = 100);
-    void follow_path_straight(std::string file_path, float precision, float angle_precision, int max_speed = 100);
+    void follow_path_straight(std::string file_path, float angle_precision, int max_speed = 100);
 };
 

@@ -1,11 +1,16 @@
-#include"robot.h"
+#include "robot.h"
 #include <string>
+#include <limits>
 
 Robot::Robot(Motor& p_left_arm, Motor& p_right_arm, Motor& p_left_motor, Motor& p_right_motor, float p_wheel_base_width, float p_wheel_diameter, bool p_left_motor_inverted, bool p_right_motor_inverted, Position starting_position):
   Diferential_drive(p_left_motor, p_right_motor, p_wheel_base_width, p_wheel_diameter, p_left_motor_inverted, p_right_motor_inverted, starting_position),
   left_arm(&p_left_motor),
   right_arm(&p_right_arm){
   
+}
+
+Robot::~Robot(){
+
 }
 
 void Robot::follow_program(std::string file_path){
@@ -18,6 +23,7 @@ void Robot::follow_program(std::string file_path){
   Motor* arm = nullptr;
   while(file >> action){
     switch(action){
+      case'K': file.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); break;
       case'S': for(int i = 0; i < 5; i++) file >> arguments[i]; go_to_position_straight(Position(stof(arguments[0]), stof(arguments[1]), 0), stof(arguments[2]), stoi(arguments[3]), "1" == arguments[4]);  break;
       case'C': for(int i = 0; i < 5; i++) file >> arguments[i]; go_to_position_curve(Position(stof(arguments[0]), stof(arguments[1]), 0), stof(arguments[2]), stoi(arguments[3]), "1" == arguments[4]);  break; 
       case'A': for(int i = 0; i < 3; i++) file >> arguments[i]; rotate_to_abs_angle(stof(arguments[0]), stof(arguments[1]), stoi(arguments[2]));  break;
@@ -27,7 +33,7 @@ void Robot::follow_program(std::string file_path){
           file >> action;
           switch(action){
             case'R': for(int i = 0; i < 2; i++) file >> arguments[i]; arm->run(stoi(arguments[0]), stoi(arguments[1]));  break;
-            case'S': for(int i = 0; i < 1; i++) file >> arguments[i]; arm->stop(arguments[0]);  break;
+            case'S': for(int i = 0; i < 1; i++) file >> arguments[i]; arm->run_direct(0); arm->stop(arguments[0]);  break; // run_direct(0) to reset polarity
             case'A': for(int i = 0; i < 3; i++) file >> arguments[i]; arm->run_to_abs_pos(stoi(arguments[0]), stoi(arguments[1]), arguments[2]);  break;
             case'M': for(int i = 0; i < 3; i++) file >> arguments[i]; arm->run_to_rel_pos(stoi(arguments[0]), stoi(arguments[1]), arguments[2]);  break;
             case'T': for(int i = 0; i < 3; i++) file >> arguments[i]; arm->run_for_time(stoi(arguments[0]), stoi(arguments[1]), arguments[2]);  break;
