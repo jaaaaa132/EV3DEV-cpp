@@ -11,13 +11,24 @@ config_version=5
 [application]
 
 config/name="ev3_costume_language"
-run/main_scene="res://main.tscn"
+run/main_scene="uid://bb312hblme2fk"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=2
+window/subwindows/embed_subwindows=false
 
 [dotnet]
 
 project/assembly_name="ev3_costume_language"
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://translations.en.translation", "res://translations.sk.translation")
 
 [rendering]
 

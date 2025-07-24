@@ -1,0 +1,353 @@
+[gd_scene load_steps=16 format=3 uid="uid://dl0msvbop0uik"]
+
+[ext_resource type="PackedScene" uid="uid://bla2n3dgrjn38" path="res://blocks/comment_block.tscn" id="1_fyqef"]
+[ext_resource type="Script" uid="uid://bf3bnbmi61x67" path="res://scripts/save.gd" id="1_m6e0p"]
+[ext_resource type="Theme" uid="uid://m1x1dnq04rcs" path="res://blocks/block_theme.tres" id="1_nltto"]
+[ext_resource type="Script" uid="uid://gofj54ang0i2" path="res://scripts/load.gd" id="2_27fn8"]
+[ext_resource type="Theme" uid="uid://bl1ypr528580u" path="res://blocks/block_theme_text.tres" id="3_ibotj"]
+[ext_resource type="PackedScene" uid="uid://f17vnyjyk7rq" path="res://blocks/go_straight_to_pos_block.tscn" id="6_n5ude"]
+[ext_resource type="PackedScene" uid="uid://blg247t2lkbx1" path="res://blocks/go_curved_to_pos_block.tscn" id="7_y4yjw"]
+[ext_resource type="PackedScene" uid="uid://pn0evxeknd0v" path="res://blocks/rotate_to_angle_block.tscn" id="8_waa4j"]
+[ext_resource type="PackedScene" uid="uid://bud64bacnbqft" path="res://blocks/rotate_to_pos_block.tscn" id="9_ok7cu"]
+[ext_resource type="PackedScene" uid="uid://c3vvonq7bgyw0" path="res://blocks/arm_stop_block.tscn" id="10_irxef"]
+[ext_resource type="PackedScene" uid="uid://nx40j8t8v5b0" path="res://blocks/arm_run_block.tscn" id="11_e2l4f"]
+[ext_resource type="PackedScene" uid="uid://ddaqk04kwxger" path="res://blocks/arm_run_to_abs_block.tscn" id="12_n5rqp"]
+[ext_resource type="PackedScene" uid="uid://dgjopp23cr406" path="res://blocks/arm_run_to_rel_block.tscn" id="13_gs482"]
+[ext_resource type="PackedScene" uid="uid://dych5if6csj47" path="res://blocks/arm_run_timed_block.tscn" id="14_cxd00"]
+[ext_resource type="PackedScene" uid="uid://cw3qcsklfhfix" path="res://blocks/arm_run_direct_block.tscn" id="15_etlur"]
+
+[node name="Control" type="CanvasLayer"]
+
+[node name="OverlayBackground" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(350, 0)
+anchors_preset = -1
+anchor_right = 0.2
+anchor_bottom = 1.0
+color = Color(0.12549, 0.360784, 0.745098, 0.317647)
+
+[node name="overlay" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(350, 0)
+anchors_preset = -1
+anchor_right = 0.2
+anchor_bottom = 1.0
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="FileManipulation" type="HBoxContainer" parent="overlay"]
+layout_mode = 2
+
+[node name="Save" type="Button" parent="overlay/FileManipulation"]
+self_modulate = Color(0.117647, 0.117647, 0.690196, 1)
+custom_minimum_size = Vector2(75, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_nltto")
+script = ExtResource("1_m6e0p")
+
+[node name="Label" type="Label" parent="overlay/FileManipulation/Save"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "SAVE"
+
+[node name="Load" type="Button" parent="overlay/FileManipulation"]
+self_modulate = Color(0.117647, 0.117647, 0.690196, 1)
+custom_minimum_size = Vector2(75, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme = ExtResource("1_nltto")
+script = ExtResource("2_27fn8")
+
+[node name="Label" type="Label" parent="overlay/FileManipulation/Load"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "LOAD"
+
+[node name="SaveDialog" type="FileDialog" parent="overlay/FileManipulation"]
+auto_translate_mode = 1
+initial_position = 4
+access = 2
+
+[node name="LoadDialog" type="FileDialog" parent="overlay/FileManipulation"]
+auto_translate_mode = 1
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
+
+[node name="Comment" type="BlockSpawner" parent="overlay"]
+scene = ExtResource("1_fyqef")
+self_modulate = Color(0.69, 0.46092, 0.1173, 1)
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme = ExtResource("1_nltto")
+
+[node name="Label" type="Label" parent="overlay/Comment"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "COMMENT"
+
+[node name="GoToPosStraight" type="BlockSpawner" parent="overlay"]
+scene = ExtResource("6_n5ude")
+self_modulate = Color(0.1173, 0.59455, 0.69, 1)
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme = ExtResource("1_nltto")
+
+[node name="Label" type="Label" parent="overlay/GoToPosStraight"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "GOTOPOSSTRAIGHT"
+
+[node name="GoToPosCurved" type="BlockSpawner" parent="overlay"]
+scene = ExtResource("7_y4yjw")
+self_modulate = Color(0.1173, 0.34638, 0.69, 1)
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme = ExtResource("1_nltto")
+
+[node name="Label" type="Label" parent="overlay/GoToPosCurved"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "GOTOPOSCURVED"
+
+[node name="RotateToAngle" type="BlockSpawner" parent="overlay"]
+scene = ExtResource("8_waa4j")
+self_modulate = Color(0.69, 0.1173, 0.65182, 1)
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme = ExtResource("1_nltto")
+
+[node name="Label" type="Label" parent="overlay/RotateToAngle"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "ROTATETOANGLE"
+
+[node name="RotateToPosition" type="BlockSpawner" parent="overlay"]
+scene = ExtResource("9_ok7cu")
+self_modulate = Color(0.40365, 0.1173, 0.69, 1)
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme = ExtResource("1_nltto")
+
+[node name="Label" type="Label" parent="overlay/RotateToPosition"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "ROTATETOPOSITION"
+
+[node name="ArmStop" type="BlockSpawner" parent="overlay"]
+scene = ExtResource("10_irxef")
+self_modulate = Color(0.69, 0.21275, 0.1173, 1)
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme = ExtResource("1_nltto")
+
+[node name="Label" type="Label" parent="overlay/ArmStop"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "ARMSTOP"
+
+[node name="ArmRun" type="BlockSpawner" parent="overlay"]
+scene = ExtResource("11_e2l4f")
+self_modulate = Color(0.69, 0.65182, 0.1173, 1)
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme = ExtResource("1_nltto")
+
+[node name="Label" type="Label" parent="overlay/ArmRun"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "ARMRUN"
+
+[node name="ArmRunToAbs" type="BlockSpawner" parent="overlay"]
+scene = ExtResource("12_n5rqp")
+self_modulate = Color(0.55637, 0.69, 0.1173, 1)
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme = ExtResource("1_nltto")
+
+[node name="Label" type="Label" parent="overlay/ArmRunToAbs"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "ARMRUNTOABS"
+
+[node name="ArmRunToRel" type="BlockSpawner" parent="overlay"]
+scene = ExtResource("13_gs482")
+self_modulate = Color(0.40365, 0.69, 0.1173, 1)
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme = ExtResource("1_nltto")
+
+[node name="Label" type="Label" parent="overlay/ArmRunToRel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "ARMRUNTOREL"
+
+[node name="ArmRunTimed" type="BlockSpawner" parent="overlay"]
+scene = ExtResource("14_cxd00")
+self_modulate = Color(0.1173, 0.69, 0.21275, 1)
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme = ExtResource("1_nltto")
+
+[node name="Label" type="Label" parent="overlay/ArmRunTimed"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "ARMRUNTIMED"
+
+[node name="ArmRunDirect" type="BlockSpawner" parent="overlay"]
+scene = ExtResource("15_etlur")
+self_modulate = Color(0.1173, 0.69, 0.4991, 1)
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme = ExtResource("1_nltto")
+
+[node name="Label" type="Label" parent="overlay/ArmRunDirect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "ARMRUNDIRECT"
+
+[connection signal="pressed" from="overlay/FileManipulation/Save" to="overlay/FileManipulation/Save" method="_on_pressed"]
+[connection signal="pressed" from="overlay/FileManipulation/Load" to="overlay/FileManipulation/Load" method="_on_pressed"]

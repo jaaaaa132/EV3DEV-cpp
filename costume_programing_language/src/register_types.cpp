@@ -1,6 +1,9 @@
 #include "register_types.h"
 
-#include "gdexample.h"
+#include "block.h"
+#include "sub_blocks.h"
+#include "block_spawner.h"
+#include "draggable_camera.h"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/defs.hpp>
@@ -13,7 +16,21 @@ void initialize_example_module(ModuleInitializationLevel p_level) {
 		return;
 	}
 
-	GDREGISTER_RUNTIME_CLASS(GDExample);
+	GDREGISTER_RUNTIME_CLASS(Block);
+	GDREGISTER_RUNTIME_CLASS(MainBlock);
+	GDREGISTER_RUNTIME_CLASS(CommentBlock);
+	GDREGISTER_RUNTIME_CLASS(GoStraightToPosBlock);
+	GDREGISTER_RUNTIME_CLASS(GoCurvedToPosBlock);
+	GDREGISTER_RUNTIME_CLASS(RotateToAngleBlock);
+	GDREGISTER_RUNTIME_CLASS(RotateToPositionBlock);
+	GDREGISTER_RUNTIME_CLASS(ArmStopBlock);
+	GDREGISTER_RUNTIME_CLASS(ArmRunBlock);
+	GDREGISTER_RUNTIME_CLASS(ArmRunToAbsBlock);
+	GDREGISTER_RUNTIME_CLASS(ArmRunToRelBlock);
+	GDREGISTER_RUNTIME_CLASS(ArmRunTimedBlock);
+	GDREGISTER_RUNTIME_CLASS(ArmRunDirectBlock);
+	GDREGISTER_RUNTIME_CLASS(BlockSpawner);
+	GDREGISTER_RUNTIME_CLASS(DraggableCamera);
 }
 
 void uninitialize_example_module(ModuleInitializationLevel p_level) {

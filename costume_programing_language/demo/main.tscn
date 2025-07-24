@@ -1,8 +1,48 @@
-[gd_scene load_steps=2 format=3 uid="uid://cfqrcp3kro88h"]
+[gd_scene load_steps=5 format=3 uid="uid://cfqrcp3kro88h"]
 
-[ext_resource type="Texture2D" uid="uid://cb7gl2pm2yt2g" path="res://icon.svg" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://dl0msvbop0uik" path="res://ui.tscn" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://dj7sjspfhcv0c" path="res://blocks/main_block.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://vnv16gkshusy" path="res://map.tscn" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://dv565bcbq7t2i" path="res://map_setup.tscn" id="4_1bvp3"]
 
-[node name="Node2D" type="Node2D"]
+[node name="main" type="Node2D"]
 
-[node name="GDExample" type="GDExample" parent="."]
-texture = ExtResource("1_ig7tw")
+[node name="DraggableCamera" type="DraggableCamera" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 20.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="DraggableCamera"]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="DraggableCamera/CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.589823, 0.68907, 1, 1)
+
+[node name="Button" type="Button" parent="DraggableCamera/CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Ui" parent="." instance=ExtResource("2_0xm2m")]
+layer = 0
+
+[node name="MainBlock" parent="." instance=ExtResource("2_h2yge")]
+position = Vector2(960, 540)
+
+[node name="Map" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="Map" parent="Map" instance=ExtResource("3_h2yge")]
+visible = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" parent="CanvasLayer" instance=ExtResource("4_1bvp3")]

@@ -1,0 +1,40 @@
+,en,sk
+CLOSE,close,zavrieť
+SAVE,save,uložiť
+LOAD,load,načítať
+START,start,začiatok
+COMMENT,comment,komentár
+GOTOPOSSTRAIGHT,go to position straight,choď na pozíciu priamo
+GOSTRAIGHTTO,go straight to,choď primo na
+ANGLEPRECISION,"angle precision, rad, FLOAT","presnosť uhla, rad, FLOAT"
+GOTOPOSCURVED,go to position curved,choď na pozíciu krivkou
+GOCURVEDTO,go curved to,choď krivkou na
+PRECISION,"precision, cm, FLOAT","presnosť, cm, FLOAT"
+MAXSPEED,"max speed, INT 0<->100","maximálna rýchlosť, INT 0<->100"
+FORWARDONLY,forward only,choď iba dopredu
+POS:,Pos.:,Poz.:
+SELECTMAP,select map,vyberte mapu
+XMAPSIZE:,X map dimension:,x veľkosť mapy:
+YMAPSIZE:,Y map dimension:,y veľkosť mapy:
+ROTATETOANGLE,rotate to angle,natoč sa na uhol
+ANGLE:,"angle, rad, FLOAT","uhol, rad, FLOAT"
+ROTATETOPOSITION,rotate to position,natoč sa na poziciu
+ROTATETO,rotate to ,natoč sa na 
+ANGLEOFFSET,"angle offset, rad, FLOAT","ofset uhla, rad, FLOAT"
+ARMSTOP,stop arm,zastav rameno
+LEFT,left,lavé
+RIGHT,right,pravé
+STOPACTION,stop action,typ zastavenia
+HOLD,hold,drž
+BRAKE,brake,brzdi
+COAST,coast,voľnobeh
+ARMRUN,start moving arm,spusti rameno
+SPEED,"speed, 0<->1054, INT","rýchlosť 0<->1054, INT"
+ACCELERATION,"acceleration, 0 is fastest","zrýchlenie, 0 je najrýchlejšia"
+ARMRUNTOABS,arm turn to,natoč rameno na
+POSITION,"position, 0,1deg, INT,","pozicia, 0.1deg, INT"
+ARMRUNTOREL,rotate arm by,otoč rameno o
+ARMRUNTIMED,start moving arm for,spusti rameno na
+TIME,"time, ms, INT","čas, ms, INT"
+ARMRUNDIRECT,start moving arm with force,spusti rameno so silou
+REVERSED,reversed,opačný smer

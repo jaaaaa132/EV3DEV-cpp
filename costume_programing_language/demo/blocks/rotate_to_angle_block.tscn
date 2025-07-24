@@ -1,0 +1,95 @@
+[gd_scene load_steps=4 format=3 uid="uid://pn0evxeknd0v"]
+
+[ext_resource type="Theme" uid="uid://m1x1dnq04rcs" path="res://blocks/block_theme.tres" id="1_qhseq"]
+[ext_resource type="Theme" uid="uid://bl1ypr528580u" path="res://blocks/block_theme_text.tres" id="2_1ii3c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_54lax"]
+
+[node name="Block" type="RotateToAngleBlock"]
+
+[node name="Button" type="Button" parent="."]
+self_modulate = Color(0.690196, 0.117647, 0.65098, 1)
+custom_minimum_size = Vector2(200, 50)
+offset_right = 565.0
+offset_bottom = 50.0
+theme = ExtResource("1_qhseq")
+alignment = 0
+icon_alignment = 1
+expand_icon = true
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Button"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 385.0
+offset_bottom = 20.0
+grow_vertical = 2
+
+[node name="Separator" type="Container" parent="Button/HBoxContainer"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Button/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_1ii3c")
+text = "ROTATETOANGLE"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Separator2" type="Container" parent="Button/HBoxContainer"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+
+[node name="Angle" type="LineEdit" parent="Button/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "ANGLE:"
+theme_override_font_sizes/font_size = 20
+text = "0"
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Separator4" type="Container" parent="Button/HBoxContainer"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+
+[node name="AnglePrecision" type="LineEdit" parent="Button/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "ANGLEPRECISION"
+theme_override_font_sizes/font_size = 20
+text = "0.008726645"
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Separator3" type="Container" parent="Button/HBoxContainer"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+
+[node name="MaxSpeed" type="LineEdit" parent="Button/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "MAXSPEED"
+theme_override_font_sizes/font_size = 20
+text = "100"
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+priority = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(165, -51.215)
+scale = Vector2(13, 4)
+shape = SubResource("RectangleShape2D_54lax")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+visible = false
+collision_mask = 0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(165, 25)
+scale = Vector2(17, 3)
+shape = SubResource("RectangleShape2D_54lax")

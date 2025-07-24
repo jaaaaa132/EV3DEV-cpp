@@ -1,0 +1,55 @@
+[gd_scene load_steps=4 format=3 uid="uid://bla2n3dgrjn38"]
+
+[ext_resource type="Theme" uid="uid://m1x1dnq04rcs" path="res://blocks/block_theme.tres" id="1_rwbf8"]
+[ext_resource type="Theme" uid="uid://bl1ypr528580u" path="res://blocks/block_theme_text.tres" id="2_am1fx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qncar"]
+
+[node name="Block" type="CommentBlock"]
+
+[node name="Button" type="Button" parent="."]
+self_modulate = Color(0.69, 0.46092, 0.1173, 1)
+custom_minimum_size = Vector2(200, 50)
+offset_right = 375.0
+offset_bottom = 50.0
+theme = ExtResource("1_rwbf8")
+alignment = 0
+icon_alignment = 1
+expand_icon = true
+
+[node name="Label" type="Label" parent="Button"]
+layout_mode = 0
+offset_left = 8.475
+offset_top = 6.815
+offset_right = 124.475
+offset_bottom = 41.815
+theme = ExtResource("2_am1fx")
+text = "COMMENT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextEdit" type="LineEdit" parent="."]
+offset_left = 136.0
+offset_top = 4.0
+offset_right = 370.0
+offset_bottom = 47.0
+theme_override_font_sizes/font_size = 20
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+priority = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(165, -51.215)
+scale = Vector2(13, 4)
+shape = SubResource("RectangleShape2D_qncar")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+visible = false
+collision_mask = 0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(165, 25)
+scale = Vector2(17, 3)
+shape = SubResource("RectangleShape2D_qncar")

@@ -1,0 +1,142 @@
+[gd_scene load_steps=5 format=3 uid="uid://dv565bcbq7t2i"]
+
+[ext_resource type="Script" uid="uid://dbs3cgconef56" path="res://scripts/map_setup.gd" id="1_lb5pc"]
+[ext_resource type="Theme" uid="uid://m1x1dnq04rcs" path="res://blocks/block_theme.tres" id="1_mto7b"]
+[ext_resource type="Script" uid="uid://mdwk3noy6xbp" path="res://scripts/map_file_selector.gd" id="2_lb5pc"]
+[ext_resource type="Theme" uid="uid://bl1ypr528580u" path="res://blocks/block_theme_text.tres" id="2_sk51b"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lb5pc")
+
+[node name="Bg" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.589823, 0.68907, 1, 1)
+
+[node name="MapFile" type="Button" parent="."]
+self_modulate = Color(0.117647, 0.117647, 0.690196, 1)
+custom_minimum_size = Vector2(300, 30)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.45
+anchor_right = 0.6
+anchor_bottom = 0.5
+offset_top = -2.0
+offset_right = 5.47998
+offset_bottom = 0.719971
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_mto7b")
+script = ExtResource("2_lb5pc")
+
+[node name="Label" type="Label" parent="MapFile"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.5
+offset_top = -17.5
+offset_right = 75.5
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_sk51b")
+text = "SELECTMAP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FileDialog" type="FileDialog" parent="MapFile"]
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.66
+anchor_right = 1.0
+anchor_bottom = 0.66
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="XLabel" type="Label" parent="HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme = ExtResource("2_sk51b")
+theme_override_colors/font_shadow_color = Color(0.3036, 0.38088, 0.69, 1)
+theme_override_constants/shadow_offset_x = -1
+theme_override_constants/shadow_offset_y = 2
+text = "XMAPSIZE:"
+
+[node name="X" type="LineEdit" parent="HBoxContainer"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+tooltip_text = "cm, FLOAT"
+
+[node name="Separator" type="Container" parent="HBoxContainer"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+
+[node name="YLabel" type="Label" parent="HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme = ExtResource("2_sk51b")
+theme_override_colors/font_shadow_color = Color(0.3036, 0.38088, 0.69, 1)
+theme_override_constants/shadow_offset_x = -1
+theme_override_constants/shadow_offset_y = 2
+text = "YMAPSIZE:"
+
+[node name="Y" type="LineEdit" parent="HBoxContainer"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+tooltip_text = "cm, FLOAT"
+
+[node name="Exit" type="Button" parent="."]
+self_modulate = Color(0.117647, 0.117647, 0.690196, 1)
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.05
+anchor_bottom = 0.05
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme = ExtResource("1_mto7b")
+
+[node name="Label" type="Label" parent="Exit"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = -17.5
+offset_right = 30.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_sk51b")
+text = "SAVE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="MapFile" to="MapFile" method="_on_pressed"]
+[connection signal="file_selected" from="MapFile/FileDialog" to="MapFile" method="_on_file_dialog_file_selected"]
+[connection signal="pressed" from="Exit" to="." method="_on_exit_pressed"]

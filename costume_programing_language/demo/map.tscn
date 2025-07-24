@@ -1,0 +1,94 @@
+[gd_scene load_steps=8 format=3 uid="uid://vnv16gkshusy"]
+
+[ext_resource type="Texture2D" uid="uid://856cd0gljjqi" path="res://testmap.jpeg" id="1_c7s6e"]
+[ext_resource type="Theme" uid="uid://m1x1dnq04rcs" path="res://blocks/block_theme.tres" id="2_e0an3"]
+[ext_resource type="Script" uid="uid://p3lxp7in37va" path="res://scripts/size.gd" id="2_urblq"]
+[ext_resource type="Theme" uid="uid://bl1ypr528580u" path="res://blocks/block_theme_text.tres" id="3_p5pve"]
+[ext_resource type="Script" uid="uid://cwscy27mv122p" path="res://scripts/map_exit_button.gd" id="3_urblq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c7s6e"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 500
+corner_radius_top_right = 500
+corner_radius_bottom_right = 500
+corner_radius_bottom_left = 500
+
+[sub_resource type="Theme" id="Theme_wijl4"]
+Panel/styles/panel = SubResource("StyleBoxFlat_c7s6e")
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.59, 0.6925, 1, 1)
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.05
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+ratio = 2.0726
+
+[node name="TextureRect" type="TextureRect" parent="AspectRatioContainer"]
+layout_mode = 2
+texture = ExtResource("1_c7s6e")
+expand_mode = 1
+
+[node name="Point" type="Panel" parent="AspectRatioContainer/TextureRect"]
+self_modulate = Color(0.944667, 1, 0.17, 1)
+layout_mode = 1
+anchors_preset = -1
+offset_right = 15.0
+offset_bottom = 15.0
+rotation = 3.14159
+pivot_offset = Vector2(3.75, 3.75)
+theme = SubResource("Theme_wijl4")
+
+[node name="Size" type="Node" parent="AspectRatioContainer/TextureRect"]
+script = ExtResource("2_urblq")
+
+[node name="Button" type="Button" parent="."]
+self_modulate = Color(0.117647, 0.117647, 0.690196, 1)
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.05
+anchor_bottom = 0.05
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme = ExtResource("2_e0an3")
+script = ExtResource("3_urblq")
+
+[node name="Label" type="Label" parent="Button"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.5
+offset_top = -17.5
+offset_right = 30.5
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_p5pve")
+text = "CLOSE"
+
+[connection signal="pressed" from="Button" to="Button" method="_on_pressed"]

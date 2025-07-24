@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3 uid="uid://bb312hblme2fk"]
+
+[ext_resource type="Script" uid="uid://ms6uksvnn2to" path="res://scripts/translationsmenu.gd" id="1_fk847"]
+[ext_resource type="Texture2D" uid="uid://d07v30u4rl0hw" path="res://flag-gb.svg" id="2_qsldh"]
+[ext_resource type="Texture2D" uid="uid://bc2dxca8msfkm" path="res://flag-sk.svg" id="3_v47i7"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fk847")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.589823, 0.68907, 1, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="En" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+icon = ExtResource("2_qsldh")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="Sk" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+icon = ExtResource("3_v47i7")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[connection signal="pressed" from="HBoxContainer/En" to="." method="_on_en_pressed"]
+[connection signal="pressed" from="HBoxContainer/Sk" to="." method="_on_sk_pressed"]
