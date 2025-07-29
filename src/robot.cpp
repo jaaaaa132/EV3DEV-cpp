@@ -30,15 +30,15 @@ void Robot::follow_program(std::string file_path){
       case'P': for(int i = 0; i < 5; i++) file >> arguments[i]; go_to_position_straight(Position(stof(arguments[0]), stof(arguments[1]), 0), stof(arguments[2]), stoi(arguments[3]), std::stof(arguments[4]));  break;
       case'L': arm = left_arm;
       case'R': if(action == 'R') arm = right_arm;
-          file >> action;
-          switch(action){
-            case'R': for(int i = 0; i < 2; i++) file >> arguments[i]; arm->run(stoi(arguments[0]), stoi(arguments[1]));  break;
-            case'S': for(int i = 0; i < 1; i++) file >> arguments[i]; arm->run_direct(0); arm->stop(arguments[0]);  break; // run_direct(0) to reset polarity
-            case'A': for(int i = 0; i < 3; i++) file >> arguments[i]; arm->run_to_abs_pos(stoi(arguments[0]), stoi(arguments[1]), arguments[2]);  break;
-            case'M': for(int i = 0; i < 3; i++) file >> arguments[i]; arm->run_to_rel_pos(stoi(arguments[0]), stoi(arguments[1]), arguments[2]);  break;
-            case'T': for(int i = 0; i < 3; i++) file >> arguments[i]; arm->run_for_time(stoi(arguments[0]), stoi(arguments[1]), arguments[2]);  break;
-            case'D': for(int i = 0; i < 2; i++) file >> arguments[i]; arm->run_direct(stoi(arguments[0]), "1" == arguments[1]); break;
-         }
+        file >> action;
+        switch(action){
+          case'R': for(int i = 0; i < 2; i++) file >> arguments[i]; arm->run(stoi(arguments[0]), stoi(arguments[1]));  break;
+          case'S': for(int i = 0; i < 1; i++) file >> arguments[i]; arm->run_direct(0); arm->stop(arguments[0]);  break; // run_direct(0) to reset polarity
+          case'A': for(int i = 0; i < 3; i++) file >> arguments[i]; arm->run_to_abs_pos(stoi(arguments[0]), stoi(arguments[1]), arguments[2]);  break;
+          case'M': for(int i = 0; i < 3; i++) file >> arguments[i]; arm->run_to_rel_pos(stoi(arguments[0]), stoi(arguments[1]), arguments[2]);  break;
+          case'T': for(int i = 0; i < 3; i++) file >> arguments[i]; arm->run_for_time(stoi(arguments[0]), stoi(arguments[1]), arguments[2]);  break;
+          case'D': for(int i = 0; i < 2; i++) file >> arguments[i]; arm->run_direct(stoi(arguments[0]), "1" == arguments[1]); break;
+        }
     }
   }
 }

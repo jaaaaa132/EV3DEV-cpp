@@ -66,6 +66,8 @@ void Diferential_drive::track_position(){
     position = p_position;
     left_motor_last_pos = left_motor_pos;
     right_motor_last_pos = right_motor_pos;
+    //std::cout << position.x << " " << position.y << " " << position.angle << std::endl;
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
   }
 }
 
@@ -188,7 +190,7 @@ void Diferential_drive::rotate_to_abs_angle(float angle, float precision, int ma
   constexpr float P_const = 25;
   while(abs(angle_dif) > precision){
     int speed = std::fmin(1, std::fmax(-1, angle_dif * P_const));
-    std::cout << angle_dif << std::endl;
+    //std::cout << angle_dif << std::endl;
     left_motor->run_direct(abs(speed) * max_speed, left_motor_inverted ? !(speed < 0) : speed < 0);
     right_motor->run_direct(abs(speed) * max_speed, !right_motor_inverted ? !(speed < 0) : speed < 0);
     angle_dif = normalize_angle(position.angle - angle);
