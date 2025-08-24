@@ -29,6 +29,7 @@ void initialize_example_module(ModuleInitializationLevel p_level) {
 	GDREGISTER_RUNTIME_CLASS(ArmRunToRelBlock);
 	GDREGISTER_RUNTIME_CLASS(ArmRunTimedBlock);
 	GDREGISTER_RUNTIME_CLASS(ArmRunDirectBlock);
+	GDREGISTER_RUNTIME_CLASS(ArmWaitBlock);
 	GDREGISTER_RUNTIME_CLASS(BlockSpawner);
 	GDREGISTER_RUNTIME_CLASS(DraggableCamera);
 }

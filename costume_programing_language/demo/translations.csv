@@ -17,7 +17,7 @@ SELECTMAP,select map,vyberte mapu
 XMAPSIZE:,X map dimension:,x veľkosť mapy:
 YMAPSIZE:,Y map dimension:,y veľkosť mapy:
 ROTATETOANGLE,rotate to angle,natoč sa na uhol
-ANGLE:,"angle, rad, FLOAT","uhol, rad, FLOAT"
+ANGLE,"angle, rad, FLOAT","uhol, rad, FLOAT"
 ROTATETOPOSITION,rotate to position,natoč sa na poziciu
 ROTATETO,rotate to ,natoč sa na 
 ANGLEOFFSET,"angle offset, rad, FLOAT","ofset uhla, rad, FLOAT"
@@ -38,3 +38,12 @@ ARMRUNTIMED,start moving arm for,spusti rameno na
 TIME,"time, ms, INT","čas, ms, INT"
 ARMRUNDIRECT,start moving arm with force,spusti rameno so silou
 REVERSED,reversed,opačný smer
+ARMWAIT,wait for arm,počkaj na rameno
+ROBOTCONSTANTS,robot constants,konštanty robota
+BASEWIDTH:,base width:,šírka robota:
+WHEELCIRCUMFERENCE:,wheel circumferene:,obvod kolesa:
+STARTINGPOSITION:,starting position:,začiatočná pozícia:
+MOTORSINVERSED:,inversed motor:,opačný chod:
+LEFTMOTOR:,left motor:,lavý motor:
+RIGHTMOTOR:,right motor:,pravý motor:
+ANGLE:,angle:,uhol:

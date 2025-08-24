@@ -157,7 +157,7 @@ void Diferential_drive::go_to_position_curve(Position target_position, float pre
     right_motor->run_direct(0);
     
     left_motor->stop();
-    right_motor->stop();;
+    right_motor->stop();
   }
   catch(std::runtime_error& error){
     std::cout << "rethrowing error from go_to_position_curve in Diferential_drive: " << error.what() << std::endl;
@@ -179,10 +179,9 @@ void Diferential_drive::go_to_position_straight(Position target_position, float 
   float target_distance_wheele_deg = target_distance / wheel_diameter * 360;
   left_motor->run_to_rel_pos(target_distance_wheele_deg * (left_motor_inverted ? -1 : 1), max_motor_speed * 10.5);
   right_motor->run_to_rel_pos(target_distance_wheele_deg * (right_motor_inverted ? -1 : 1), max_motor_speed * 10.5);
-  std::cout << (target_distance_wheele_deg * (right_motor_inverted ? -1 : 1)) << std::endl;
-  while(left_motor->get_state() == "running" || right_motor->get_state() == "running"){
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
-  }
+  //std::cout << (target_distance_wheele_deg * (right_motor_inverted ? -1 : 1)) << std::endl;
+  left_motor->wait_for_stop();
+  right_motor->wait_for_stop();
 }
 
 void Diferential_drive::rotate_to_abs_angle(float angle, float precision, int max_speed){

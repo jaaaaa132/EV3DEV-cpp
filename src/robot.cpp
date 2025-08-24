@@ -38,6 +38,7 @@ void Robot::follow_program(std::string file_path){
           case'M': for(int i = 0; i < 3; i++) file >> arguments[i]; arm->run_to_rel_pos(stoi(arguments[0]), stoi(arguments[1]), arguments[2]);  break;
           case'T': for(int i = 0; i < 3; i++) file >> arguments[i]; arm->run_for_time(stoi(arguments[0]), stoi(arguments[1]), arguments[2]);  break;
           case'D': for(int i = 0; i < 2; i++) file >> arguments[i]; arm->run_direct(stoi(arguments[0]), "1" == arguments[1]); break;
+          case'W': arm->wait_for_stop();
         }
     }
   }

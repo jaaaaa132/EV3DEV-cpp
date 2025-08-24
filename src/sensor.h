@@ -1,5 +1,6 @@
-#include<iostream>
-#include<fstream>
+#include <iostream>
+#include <fstream>
+#include <array>
 class Sensor{
   private:
 
@@ -26,6 +27,9 @@ class Sensor{
   public:
     Sensor();
     ~Sensor();
+    Sensor(Sensor&&) = default;
+    Sensor& operator=(Sensor&&) = default;
+    static std::array<Sensor, 4> find_sensors();
     void set_directory(std::string p_directory);
     bool is_connected();
     int get_value(int value_index = 0);

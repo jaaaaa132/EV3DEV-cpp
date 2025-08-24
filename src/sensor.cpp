@@ -1,6 +1,8 @@
-#include"sensor.h"
-#include<iostream>
-#include<fstream>
+#include "sensor.h"
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <experimental/filesystem>
 
 void Sensor::open_files(){
   mode_file.open(std::string("/sys/class/lego-sensor/") + directory + std::string("/mode"), std::fstream::out);
@@ -64,6 +66,44 @@ Sensor::Sensor(){
 
 Sensor::~Sensor(){
 
+}
+
+std::array<Sensor, 4> Sensor::find_sensors(){
+  // find all connected sensors
+	std::vector<std::string> sensor_directories;	
+	std::string sensor_path = "/sys/class/lego-sensor";
+	for (const std::experimental::filesystem::directory_entry& entry : std::experimental::filesystem::directory_iterator(sensor_path)) {
+    	if (std::experimental::filesystem::is_directory(entry.path())) {
+      		sensor_directories.push_back(entry.path().filename().string());
+    	}
+  	}
+
+	std::array<Sensor, 4> sensors;
+	
+	for(std::size_t i = 0; i < sensor_directories.size(); i++){
+    // finding what port is sensor connected to
+		std::string address_file_path = "/sys/class/lego-sensor/" + sensor_directories.at(i) + "/address";
+		std::ifstream address_file;
+		address_file.open(address_file_path, std::fstream::in);
+		if(!address_file.is_open()){
+			std::cout << "file could not be opened: " << address_file_path << std::endl;
+			std::cerr << "file could not be opened: " << address_file_path << std::endl;
+			continue;
+		}
+		int port;
+		std::string address;
+		address_file >> address;
+		port = address.at(12) - '1';
+    // configuring sensor to ind it's directory
+		switch(port){
+			case 0:	sensors.at(0).set_directory(sensor_directories.at(i));break;
+			case 1:	sensors.at(1).set_directory(sensor_directories.at(i));break;
+			case 2:	sensors.at(2).set_directory(sensor_directories.at(i));break;
+			case 3:	sensors.at(3).set_directory(sensor_directories.at(i));break;
+		}
+ 
+	}
+  return sensors;
 }
 
 void Sensor::set_directory(std::string p_directory){

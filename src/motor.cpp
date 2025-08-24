@@ -1,8 +1,12 @@
-#include"motor.h"
+#include "motor.h"
 #include <cmath>
 #include <fstream>
 #include <stdexcept>
 #include <string>
+#include <chrono>
+#include <thread>
+#include <vector>
+#include <experimental/filesystem>
 
 void Motor::open_files(){
 	speed_file.open(std::string("/sys/class/tacho-motor/")        + directory + std::string("/speed_sp"),     std::fstream::out);
@@ -46,6 +50,52 @@ bool Motor::are_files_opened(){
 	        check_file(polarity_file, "polarity_file") &&
           check_file(state_file, "state_file") &&
           check_file(time_file, "time_file");
+}
+
+Motor::Motor(){
+
+}
+
+Motor::~Motor(){
+
+}
+
+std::array<Motor, 4> Motor::find_motors(){
+  // find all connected motors
+	std::vector<std::string> motor_directories;	
+	std::string motor_path = "/sys/class/tacho-motor";
+	for (const std::experimental::filesystem::directory_entry& entry : std::experimental::filesystem::directory_iterator(motor_path)) {
+		if (std::experimental::filesystem::is_directory(entry.path())) {
+      	motor_directories.push_back(entry.path().filename().string());
+    }
+  }
+
+	std::array<Motor, 4> motors;
+	
+	for(std::size_t i = 0; i < motor_directories.size(); i++){
+		// finding port of motor
+    std::string address_file_path = "/sys/class/tacho-motor/" + motor_directories.at(i) + "/address";
+		std::ifstream address_file;
+		address_file.open(address_file_path, std::fstream::in);
+		if(!address_file.is_open()){
+			std::cout << "file could not be opened: " << address_file_path << std::endl;
+			std::cerr << "file could not be opened: " << address_file_path << std::endl;
+			continue;
+		}
+		int port;
+		std::string address;
+		address_file >> address;
+		port = address.at(13) - 'A';
+    // configuring motor to find it's directory
+		switch(port){
+			case 0:	motors.at(0).set_directory(motor_directories.at(i));break;
+			case 1:	motors.at(1).set_directory(motor_directories.at(i));break;
+			case 2:	motors.at(2).set_directory(motor_directories.at(i));break;
+			case 3:	motors.at(3).set_directory(motor_directories.at(i));break;
+		}
+	   
+	}
+  return motors;
 }
 
 bool Motor::is_connected(){
@@ -195,4 +245,15 @@ void Motor::set_position(int new_position){
   position_file << std::to_string(new_position);
   position_file.flush();
   return;
+}
+
+void Motor::wait_for_stop(){
+  if(!are_files_opened()){
+    open_files();
+    if(!are_files_opened()) throw std::runtime_error("cann't open files from: " + directory);
+  }
+
+  while(get_state().find("running") != std::string::npos || get_state().find("ramping") != std::string::npos) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }
 }

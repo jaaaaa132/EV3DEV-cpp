@@ -1,7 +1,7 @@
-[gd_scene load_steps=24 format=4 uid="uid://c3vvonq7bgyw0"]
+[gd_scene load_steps=24 format=4 uid="uid://cr0btgwhxm1ft"]
 
-[ext_resource type="Theme" uid="uid://m1x1dnq04rcs" path="res://blocks/block_theme.tres" id="1_4gs6t"]
-[ext_resource type="Theme" uid="uid://bl1ypr528580u" path="res://blocks/block_theme_text.tres" id="2_gtxx1"]
+[ext_resource type="Theme" uid="uid://m1x1dnq04rcs" path="res://blocks/block_theme.tres" id="1_tnhnq"]
+[ext_resource type="Theme" uid="uid://bl1ypr528580u" path="res://blocks/block_theme_text.tres" id="2_8d4ck"]
 
 [sub_resource type="Image" id="Image_wyoyw"]
 data = {
@@ -1436,7 +1436,7 @@ cache/0/16/1/glyphs/134217809/size = Vector2(11, 13)
 cache/0/16/1/glyphs/134217809/uv_rect = Rect2(174, 1, 11, 13)
 cache/0/16/1/glyphs/134217809/texture_idx = 0
 
-[sub_resource type="Image" id="Image_5r42b"]
+[sub_resource type="Image" id="Image_bg4lb"]
 data = {
 "data": PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALGxsZmxsbGmqqqqEgAAAAAAAAAAAAAAAAAAAACqqqoSsbGxprKyspcAAAAAAAAAALGxsaaysrLZsrKysqqqqhIAAAAAAAAAAKqqqhKysrKzsrKy2bKysqUAAAAAAAAAAKqqqhKysrKysrKy2bKysrKqqqoSqqqqErKysrOysrLZsrKysrS0tBEAAAAAAAAAAAAAAACqqqoSsrKysrKystmysrLFsrKyxbKystmysrKytLS0EQAAAAAAAAAAAAAAAAAAAAAAAAAAqqqqErKysrKysrLZsrKy2bKysrK0tLQRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKqqqhKysrKlsrKypbS0tBEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
 "format": "RGBA8",
@@ -1446,7 +1446,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_ukow1"]
-image = SubResource("Image_5r42b")
+image = SubResource("Image_bg4lb")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aogel"]
 content_margin_left = 8.0
@@ -1599,14 +1599,14 @@ PopupMenu/styles/panel = SubResource("StyleBoxFlat_4gs6t")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_54lax"]
 
-[node name="Block" type="ArmStopBlock"]
+[node name="Block" type="ArmWaitBlock"]
 
 [node name="Button" type="Button" parent="."]
-self_modulate = Color(0.69, 0.1173, 0.1173, 1)
+self_modulate = Color(0.69, 0.3082, 0.1173, 1)
 custom_minimum_size = Vector2(0, 50)
-offset_right = 406.0
+offset_right = 347.0
 offset_bottom = 50.0
-theme = ExtResource("1_4gs6t")
+theme = ExtResource("1_tnhnq")
 alignment = 0
 icon_alignment = 1
 expand_icon = true
@@ -1625,14 +1625,15 @@ theme_override_constants/separation = 16
 layout_mode = 2
 
 [node name="Name" type="Label" parent="Button/HBoxContainer"]
-custom_minimum_size = Vector2(170, 0)
+custom_minimum_size = Vector2(215, 0)
 layout_mode = 2
-theme = ExtResource("2_gtxx1")
-text = "ARMSTOP"
+theme = ExtResource("2_8d4ck")
+text = "ARMWAIT"
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Arm" type="OptionButton" parent="Button/HBoxContainer"]
+custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 theme = SubResource("Theme_n4qch")
 selected = 0
@@ -1641,20 +1642,6 @@ popup/item_0/text = "LEFT"
 popup/item_0/id = 0
 popup/item_1/text = "RIGHT"
 popup/item_1/id = 1
-
-[node name="StopAction" type="OptionButton" parent="Button/HBoxContainer"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 2
-tooltip_text = "STOPACTION"
-theme = SubResource("Theme_n4qch")
-selected = 0
-item_count = 3
-popup/item_0/text = "HOLD"
-popup/item_0/id = 0
-popup/item_1/text = "BRAKE"
-popup/item_1/id = 1
-popup/item_2/text = "COAST"
-popup/item_2/id = 2
 
 [node name="Area2D" type="Area2D" parent="."]
 visible = false

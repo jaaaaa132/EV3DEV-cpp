@@ -1,7 +1,8 @@
 #pragma once
 
-#include<iostream>
-#include<fstream>
+#include <iostream>
+#include <fstream>
+#include <array>
 
 class Motor{
 private:
@@ -26,6 +27,11 @@ protected:
   bool are_files_opened();
 
 public:
+  Motor();
+  ~Motor();
+  Motor(Motor&&) = default;
+  Motor& operator=(Motor&&) = default;
+  static std::array<Motor, 4> find_motors();
 	bool is_connected();
   void set_directory(std::string p_directory);
 	void run(int speed, int acceleration);
@@ -37,5 +43,6 @@ public:
   std::string get_state();
   int get_position();
   void set_position(int new_position);
+  void wait_for_stop();
 };
 

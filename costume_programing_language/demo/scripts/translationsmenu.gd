@@ -1,5 +1,6 @@
 extends Control
 
+var next_scene = preload("res://main.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -12,8 +13,8 @@ func _process(_delta: float) -> void:
 
 func _on_en_pressed() -> void:
 	TranslationServer.set_locale("en")
-	get_tree().change_scene_to_file("res://main.tscn")
+	get_tree().change_scene_to_packed(next_scene)
 
 func _on_sk_pressed() -> void:
 	TranslationServer.set_locale("sk")
-	get_tree().change_scene_to_file("res://main.tscn")
+	get_tree().change_scene_to_packed(next_scene)

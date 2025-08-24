@@ -1,14 +1,16 @@
-[gd_scene load_steps=16 format=3 uid="uid://dl0msvbop0uik"]
+[gd_scene load_steps=18 format=3 uid="uid://dl0msvbop0uik"]
 
 [ext_resource type="PackedScene" uid="uid://bla2n3dgrjn38" path="res://blocks/comment_block.tscn" id="1_fyqef"]
 [ext_resource type="Script" uid="uid://bf3bnbmi61x67" path="res://scripts/save.gd" id="1_m6e0p"]
 [ext_resource type="Theme" uid="uid://m1x1dnq04rcs" path="res://blocks/block_theme.tres" id="1_nltto"]
+[ext_resource type="PackedScene" uid="uid://bd4oosvpm06na" path="res://robot_constants_ui.tscn" id="1_nvb2n"]
 [ext_resource type="Script" uid="uid://gofj54ang0i2" path="res://scripts/load.gd" id="2_27fn8"]
 [ext_resource type="Theme" uid="uid://bl1ypr528580u" path="res://blocks/block_theme_text.tres" id="3_ibotj"]
 [ext_resource type="PackedScene" uid="uid://f17vnyjyk7rq" path="res://blocks/go_straight_to_pos_block.tscn" id="6_n5ude"]
 [ext_resource type="PackedScene" uid="uid://blg247t2lkbx1" path="res://blocks/go_curved_to_pos_block.tscn" id="7_y4yjw"]
 [ext_resource type="PackedScene" uid="uid://pn0evxeknd0v" path="res://blocks/rotate_to_angle_block.tscn" id="8_waa4j"]
 [ext_resource type="PackedScene" uid="uid://bud64bacnbqft" path="res://blocks/rotate_to_pos_block.tscn" id="9_ok7cu"]
+[ext_resource type="PackedScene" uid="uid://cr0btgwhxm1ft" path="res://blocks/arm_wait_block.tscn" id="10_7rqds"]
 [ext_resource type="PackedScene" uid="uid://c3vvonq7bgyw0" path="res://blocks/arm_stop_block.tscn" id="10_irxef"]
 [ext_resource type="PackedScene" uid="uid://nx40j8t8v5b0" path="res://blocks/arm_run_block.tscn" id="11_e2l4f"]
 [ext_resource type="PackedScene" uid="uid://ddaqk04kwxger" path="res://blocks/arm_run_to_abs_block.tscn" id="12_n5rqp"]
@@ -17,6 +19,8 @@
 [ext_resource type="PackedScene" uid="uid://cw3qcsklfhfix" path="res://blocks/arm_run_direct_block.tscn" id="15_etlur"]
 
 [node name="Control" type="CanvasLayer"]
+
+[node name="Control" parent="." instance=ExtResource("1_nvb2n")]
 
 [node name="OverlayBackground" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(350, 0)
@@ -211,9 +215,32 @@ grow_vertical = 2
 theme = ExtResource("3_ibotj")
 text = "ROTATETOPOSITION"
 
+[node name="ArmWait" type="BlockSpawner" parent="overlay"]
+scene = ExtResource("10_7rqds")
+self_modulate = Color(0.69, 0.3082, 0.1173, 1)
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme = ExtResource("1_nltto")
+
+[node name="Label" type="Label" parent="overlay/ArmWait"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "ARMWAIT"
+
 [node name="ArmStop" type="BlockSpawner" parent="overlay"]
 scene = ExtResource("10_irxef")
-self_modulate = Color(0.69, 0.21275, 0.1173, 1)
+self_modulate = Color(0.69, 0.1173, 0.1173, 1)
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme = ExtResource("1_nltto")

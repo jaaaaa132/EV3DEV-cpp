@@ -93,12 +93,15 @@ void MainBlock::load(String path) {
                     case 'D': // ArmRunDirect block
                         block = ResourceLoader::get_singleton()->load("res://blocks/arm_run_direct_block.tscn");
                         break;
+                    case 'W': // ArmWait block
+                        block = ResourceLoader::get_singleton()->load("res://blocks/arm_wait_block.tscn");
                 }
                 words[1] = words[0];
                 break;
         }
         words.remove_at(0);  
         if (block != nullptr) spawn_next_block(block, words);
+        else UtilityFunctions::push_error("block wasn't loaded properly, block == nullptr");
     }
 }
 
@@ -651,4 +654,45 @@ void ArmRunDirectBlock::set_parameters(PackedStringArray parameters) {
     arm->select(parameters[0] == "L" ? 0 : 1);
     speed->set_text(parameters[1]);
     reversed->set_pressed(parameters[2] == "1");
+}
+
+// ArmWaitBlock
+void ArmWaitBlock::_bind_methods(){
+
+}
+
+ArmWaitBlock::ArmWaitBlock(): Block() {
+    
+}
+
+ArmWaitBlock::~ArmWaitBlock() {
+    Block::~Block();
+}
+
+void ArmWaitBlock::_ready() {
+    Block::_ready();
+
+    // getting block parameters
+    arm = get_node<OptionButton>("Button/HBoxContainer/Arm");
+
+}
+
+String ArmWaitBlock::write() {
+    if(arm == nullptr) {
+        UtilityFunctions::push_error("ArmWaitBlock parameters not set correctly!");
+        return "error\n";
+    }
+    String command = String(arm->get_selected_id() == 0 ? "L " : "R ") + "W\n";
+    if (next != nullptr) command += next->write();
+    return command;
+}
+
+void ArmWaitBlock::set_parameters(PackedStringArray parameters) {
+    if(parameters.size() == 0) return;
+    UtilityFunctions::print("Setting parameters for ArmWaitBlock");
+    if(arm == nullptr){
+        UtilityFunctions::push_error("ArmWaitBlock parameters not set correctly!");
+        return;
+    }
+    arm->select(parameters[0] == "L" ? 0 : 1);
 }

@@ -1,0 +1,220 @@
+[gd_scene load_steps=6 format=3 uid="uid://bd4oosvpm06na"]
+
+[ext_resource type="Theme" uid="uid://m1x1dnq04rcs" path="res://blocks/block_theme.tres" id="1_lx8mh"]
+[ext_resource type="Script" uid="uid://cg83vpjrpxsfh" path="res://blocks/RobotConstants.gd" id="2_r4e15"]
+[ext_resource type="Theme" uid="uid://bl1ypr528580u" path="res://blocks/block_theme_text.tres" id="2_yqwia"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lx8mh"]
+bg_color = Color(0.33, 0.33, 1, 1)
+
+[sub_resource type="Theme" id="Theme_yqwia"]
+Panel/styles/panel = SubResource("StyleBoxFlat_lx8mh")
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="."]
+self_modulate = Color(0.117647, 0.117647, 0.690196, 1)
+custom_minimum_size = Vector2(400, 40)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8
+anchor_right = 1.0
+anchor_bottom = 0.04
+grow_horizontal = 0
+theme = ExtResource("1_lx8mh")
+script = ExtResource("2_r4e15")
+
+[node name="Label" type="Label" parent="Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_yqwia")
+text = "ROBOTCONSTANTS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="Button"]
+visible = false
+custom_minimum_size = Vector2(0, 310)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = SubResource("Theme_yqwia")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Button/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="BaseWidth" type="HBoxContainer" parent="Button/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Button/Panel/VBoxContainer/BaseWidth"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_yqwia")
+text = "BASEWIDTH:"
+
+[node name="LineEdit" type="LineEdit" parent="Button/Panel/VBoxContainer/BaseWidth"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="WheelCircumference" type="HBoxContainer" parent="Button/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Button/Panel/VBoxContainer/WheelCircumference"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_yqwia")
+text = "WHEELCIRCUMFERENCE:"
+
+[node name="LineEdit" type="LineEdit" parent="Button/Panel/VBoxContainer/WheelCircumference"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StartingPosition" type="VBoxContainer" parent="Button/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Button/Panel/VBoxContainer/StartingPosition"]
+layout_mode = 2
+theme = ExtResource("2_yqwia")
+text = "STARTINGPOSITION:"
+
+[node name="Values" type="HBoxContainer" parent="Button/Panel/VBoxContainer/StartingPosition"]
+layout_mode = 2
+
+[node name="X" type="Label" parent="Button/Panel/VBoxContainer/StartingPosition/Values"]
+layout_mode = 2
+theme = ExtResource("2_yqwia")
+text = "x:"
+
+[node name="LineEditX" type="LineEdit" parent="Button/Panel/VBoxContainer/StartingPosition/Values"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Y" type="Label" parent="Button/Panel/VBoxContainer/StartingPosition/Values"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("2_yqwia")
+text = "y:"
+
+[node name="LineEditY" type="LineEdit" parent="Button/Panel/VBoxContainer/StartingPosition/Values"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Angle" type="Label" parent="Button/Panel/VBoxContainer/StartingPosition/Values"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("2_yqwia")
+text = "ANGLE:"
+
+[node name="LineEditAngle" type="LineEdit" parent="Button/Panel/VBoxContainer/StartingPosition/Values"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Motors inversed" type="VBoxContainer" parent="Button/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Button/Panel/VBoxContainer/Motors inversed"]
+layout_mode = 2
+theme = ExtResource("2_yqwia")
+text = "MOTORSINVERSED:"
+
+[node name="StartingPosition" type="HBoxContainer" parent="Button/Panel/VBoxContainer/Motors inversed"]
+layout_mode = 2
+
+[node name="LeftMotor" type="Label" parent="Button/Panel/VBoxContainer/Motors inversed/StartingPosition"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_yqwia")
+text = "LEFTMOTOR:"
+
+[node name="CheckBoxLeftMotor" type="CheckBox" parent="Button/Panel/VBoxContainer/Motors inversed/StartingPosition"]
+layout_mode = 2
+flat = true
+
+[node name="RightMotor" type="Label" parent="Button/Panel/VBoxContainer/Motors inversed/StartingPosition"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme = ExtResource("2_yqwia")
+text = "RIGHTMOTOR:"
+
+[node name="CheckBoxRightMotor" type="CheckBox" parent="Button/Panel/VBoxContainer/Motors inversed/StartingPosition"]
+layout_mode = 2
+flat = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Button/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Save" type="Button" parent="Button/Panel/VBoxContainer/HBoxContainer"]
+self_modulate = Color(0.117647, 0.117647, 0.690196, 1)
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_lx8mh")
+
+[node name="Label" type="Label" parent="Button/Panel/VBoxContainer/HBoxContainer/Save"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_yqwia")
+text = "SAVE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FileDialog" type="FileDialog" parent="Button/Panel/VBoxContainer/HBoxContainer/Save"]
+access = 2
+
+[node name="Load" type="Button" parent="Button/Panel/VBoxContainer/HBoxContainer"]
+self_modulate = Color(0.117647, 0.117647, 0.690196, 1)
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_lx8mh")
+
+[node name="Label" type="Label" parent="Button/Panel/VBoxContainer/HBoxContainer/Load"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_yqwia")
+text = "LOAD"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FileDialog" type="FileDialog" parent="Button/Panel/VBoxContainer/HBoxContainer/Load"]
+auto_translate_mode = 1
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+
+[connection signal="pressed" from="Button" to="Button" method="_on_pressed"]
+[connection signal="pressed" from="Button/Panel/VBoxContainer/HBoxContainer/Save" to="Button" method="_on_save_pressed"]
+[connection signal="file_selected" from="Button/Panel/VBoxContainer/HBoxContainer/Save/FileDialog" to="Button" method="_on_save_file_dialog_file_selected"]
+[connection signal="pressed" from="Button/Panel/VBoxContainer/HBoxContainer/Load" to="Button" method="_on_load_pressed"]
+[connection signal="file_selected" from="Button/Panel/VBoxContainer/HBoxContainer/Load/FileDialog" to="Button" method="_on_load_file_dialog_file_selected"]

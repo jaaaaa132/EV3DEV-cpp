@@ -237,5 +237,24 @@ public:
     void set_parameters(PackedStringArray parameters) override;
 };
 
+class ArmWaitBlock : public Block {
+    GDCLASS(ArmWaitBlock, Block)
+private:
+protected:
+    static void _bind_methods();
+    OptionButton *arm = nullptr;
+    LineEdit *speed = nullptr;
+    CheckBox *reversed = nullptr; 
+
+public:
+    ArmWaitBlock();
+    ~ArmWaitBlock();
+
+    void _ready() override;
+
+    String write() override;
+    void set_parameters(PackedStringArray parameters) override;
+};
+
 }
 #endif
