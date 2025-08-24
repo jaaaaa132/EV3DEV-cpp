@@ -1,2 +1,2 @@
-#Abnormalities
-##angle zero is at y axis not at x axis
+# Abnormalities
+## - angle zero is at y axis not at x axis
