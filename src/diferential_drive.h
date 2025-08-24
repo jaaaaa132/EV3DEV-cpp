@@ -17,7 +17,7 @@ class Diferential_drive {
     bool left_motor_inverted;
     bool right_motor_inverted;
     float wheel_base_width; // in cm
-    float wheel_diameter;   // in cm
+    float wheel_circumference;   // in cm
     Position_atomic position;
     std::atomic<bool> tracking_position;
     std::thread position_tracker;
@@ -33,6 +33,7 @@ class Diferential_drive {
 
     void go_to_position_curve(Position target_position, float precision, int max_motor_speed = 100, bool forward_only = false); // angle in position is ignored
     void go_to_position_straight(Position target_position, float angle_precision, int max_motor_speed = 100, bool forward_only = false); // angle in position is ignored
+    void move_tank_direct_timed(int left_motor_speed, int right_motor_speed, int time_ms, std::string stop_action);
     void rotate_to_abs_angle(float angle, float precision, int max_speed = 100);
     void rotate_to_position(Position target, float precision, int max_speed = 100, float offset = 0); // angle in position is ignored
     void follow_path_curve(std::string file_path, float precision, float angle_precision, int max_speed = 100);

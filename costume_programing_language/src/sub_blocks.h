@@ -81,6 +81,26 @@ public:
     void set_parameters(PackedStringArray parameters) override;
 };
 
+class MoveTankDirectTimedBlock : public Block {
+    GDCLASS(MoveTankDirectTimedBlock, Block)
+private:
+protected:
+    static void _bind_methods();
+    LineEdit *left_motor_speed = nullptr;
+    LineEdit *right_motor_speed = nullptr;
+    LineEdit *time_ms = nullptr;
+    OptionButton *stop_action = nullptr;		
+
+public:
+    MoveTankDirectTimedBlock();
+    ~MoveTankDirectTimedBlock();
+
+    void _ready() override;
+
+    String write() override;
+    void set_parameters(PackedStringArray parameters) override;
+};
+
 class RotateToAngleBlock : public Block {
     GDCLASS(RotateToAngleBlock, Block)
 private:

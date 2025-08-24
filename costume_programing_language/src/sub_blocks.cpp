@@ -66,6 +66,9 @@ void MainBlock::load(String path) {
             case 'C': // GoCurvedToPos block
                 block = ResourceLoader::get_singleton()->load("res://blocks/go_curved_to_pos_block.tscn");
                 break;
+            case 'T': // MoveTankDirectTimedBlock
+                block = ResourceLoader::get_singleton()->load("res://blocks/move_tank_direct_timed_block.tscn");
+                break;
             case 'A': // RotateToAngle block
                 block = ResourceLoader::get_singleton()->load("res://blocks/rotate_to_angle_block.tscn");
                 break;
@@ -243,6 +246,63 @@ void GoCurvedToPosBlock::set_parameters(PackedStringArray parameters) {
     precision->set_text(parameters[2]);
     max_speed->set_text(parameters[3]);
     forward_only->set_pressed(bool(parameters[4] == "1"));
+}
+
+// MoveTankDirectTimedBlock
+void MoveTankDirectTimedBlock::_bind_methods(){
+
+}
+
+MoveTankDirectTimedBlock::MoveTankDirectTimedBlock(): Block() {
+    
+}
+
+MoveTankDirectTimedBlock::~MoveTankDirectTimedBlock() {
+    Block::~Block();
+}
+
+void MoveTankDirectTimedBlock::_ready() {
+    Block::_ready();
+
+    // getting block parameters
+    left_motor_speed = get_node<LineEdit>("Button/HBoxContainer/LeftMotorSpeed");
+    right_motor_speed = get_node<LineEdit>("Button/HBoxContainer/RightMotorSpeed");
+    time_ms = get_node<LineEdit>("Button/HBoxContainer/Time_ms");
+    stop_action = get_node<OptionButton>("Button/HBoxContainer/StopAction");
+}
+
+String MoveTankDirectTimedBlock::write() {
+    if(left_motor_speed == nullptr || right_motor_speed == nullptr || time_ms == nullptr || stop_action == nullptr) {
+        UtilityFunctions::push_error("MoveTankDirectTimedBlock parameters not set correctly!");
+        return "error\n";
+    }
+    String stop_action_text;
+    switch(stop_action->get_selected_id()) {
+        case 0: stop_action_text = "hold"; break;
+        case 1: stop_action_text = "brake"; break;
+        case 2: stop_action_text = "coast"; break;    
+    }
+    String command = String("T " + left_motor_speed->get_text() + " " + right_motor_speed->get_text() + " " + time_ms->get_text() + " " + stop_action_text + "\n");
+    if (next != nullptr) command += next->write();
+    return command;
+}
+
+void MoveTankDirectTimedBlock::set_parameters(PackedStringArray parameters) {
+    if(parameters.size() < 4) return;
+    UtilityFunctions::print("Setting parameters for MoveTankDirectTimedBlock");
+    if(left_motor_speed == nullptr || right_motor_speed == nullptr || time_ms == nullptr || stop_action == nullptr){
+        UtilityFunctions::push_error("MoveTankDirectTimedBlock parameters not set correctly!");
+        return;
+    }
+    left_motor_speed->set_text(parameters[0]);
+    right_motor_speed->set_text(parameters[1]);
+    time_ms->set_text(parameters[2]);
+    switch(parameters[3][0]) {
+        case 'h': stop_action->select(0); break; // hold
+        case 'b': stop_action->select(1); break; // brake
+        case 'c': stop_action->select(2); break; // coast
+        default: UtilityFunctions::push_error("Unknown stop action: " + parameters[1]);
+    }
 }
 
 // RotateToAngleBlock

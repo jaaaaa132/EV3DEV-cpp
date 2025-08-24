@@ -55,8 +55,8 @@ void Diferential_drive::track_position(){
 
     int left_motor_pos_dif = (left_motor_pos - left_motor_last_pos) * (left_motor_inverted ? -1 : 1);
     int right_motor_pos_dif = (right_motor_pos - right_motor_last_pos) * (right_motor_inverted ? -1 : 1);
-    float left_wheel_dist = wheel_diameter * left_motor_pos_dif / 360;
-    float right_wheel_dist = wheel_diameter * right_motor_pos_dif / 360;
+    float left_wheel_dist = wheel_circumference * left_motor_pos_dif / 360;
+    float right_wheel_dist = wheel_circumference * right_motor_pos_dif / 360;
     float average_distance = (left_wheel_dist + right_wheel_dist) / 2;
     float orientation_dif = (right_wheel_dist - left_wheel_dist) / wheel_base_width;
     p_position.x -= average_distance * sin(position.angle + orientation_dif / 2);
@@ -71,13 +71,13 @@ void Diferential_drive::track_position(){
   }
 }
 
-Diferential_drive::Diferential_drive(Motor& p_left_motor, Motor& p_right_motor, float p_wheel_base_width, float p_wheel_diameter, bool p_left_motor_inverted, bool p_right_motor_inverted, Position starting_position): 
+Diferential_drive::Diferential_drive(Motor& p_left_motor, Motor& p_right_motor, float p_wheel_base_width, float p_wheel_circumference, bool p_left_motor_inverted, bool p_right_motor_inverted, Position starting_position): 
   left_motor(&p_left_motor),
   right_motor(&p_right_motor), 
   left_motor_inverted(p_left_motor_inverted),      
   right_motor_inverted(p_right_motor_inverted),
   wheel_base_width(p_wheel_base_width),
-  wheel_diameter(p_wheel_diameter){
+  wheel_circumference(p_wheel_circumference){
       
   position = starting_position;
   left_motor->set_position(1000000);  // large value so tracking would work with run_direct
@@ -117,8 +117,8 @@ void Diferential_drive::go_to_position_curve(Position target_position, float pre
     const float P_angle_const = 2.5;
     //const float D_angle_const = 0; // D not needed should be removed from equsion not tested if works
     const float P_distance_const = 4.5;
-    float angular_modifier = 1 - fmin(1, fmax(0, abs(fmin(abs(goal_angle_diffrence),abs(pi - goal_angle_diffrence)) / (pi / 2) * P_angle_const /*+ (last_goal_angle_diffrence - goal_angle_diffrence) / time_span.count() * D_angle_const*/)));  
-    float speed_modifier = fmin(1, fmax(0, goal_distance / P_distance_const));
+    float angular_modifier = 1 - fmin(1, fmax(0, abs(fmin(abs(goal_angle_diffrence),abs(pi - goal_angle_diffrence)) / (pi / 2) * P_angle_const /*+ (last_goal_angle_diffrence - goal_angle_diffrence) / time_span.count() * D_angle_const*/) / wheel_circumference * wheel_base_width));  
+    float speed_modifier = fmin(1, fmax(0, goal_distance / P_distance_const * wheel_circumference));
         
     int left_motor_speed = max_motor_speed * speed_modifier, right_motor_speed = max_motor_speed * speed_modifier;
         
@@ -152,7 +152,7 @@ void Diferential_drive::go_to_position_curve(Position target_position, float pre
   }
   
   try{
-    // resets polarity
+    // resets polarity propably not needed
     left_motor->run_direct(0);
     right_motor->run_direct(0);
     
@@ -176,12 +176,24 @@ void Diferential_drive::go_to_position_straight(Position target_position, float 
     backwards = false;
   }
   float target_distance = sqrt(pow(target_position.x - position.x, 2) + pow(target_position.y - position.y, 2)) * (backwards ? -1 : 1);
-  float target_distance_wheele_deg = target_distance / wheel_diameter * 360;
+  float target_distance_wheele_deg = target_distance / wheel_circumference * 360;
   left_motor->run_to_rel_pos(target_distance_wheele_deg * (left_motor_inverted ? -1 : 1), max_motor_speed * 10.5);
   right_motor->run_to_rel_pos(target_distance_wheele_deg * (right_motor_inverted ? -1 : 1), max_motor_speed * 10.5);
   //std::cout << (target_distance_wheele_deg * (right_motor_inverted ? -1 : 1)) << std::endl;
   left_motor->wait_for_stop();
   right_motor->wait_for_stop();
+}
+
+void Diferential_drive::move_tank_direct_timed(int left_motor_speed, int right_motor_speed, int time_ms, std::string stop_action){
+  left_motor->run_direct(abs(left_motor_speed), left_motor_inverted ? left_motor_speed > 0 : left_motor_speed < 0);
+  right_motor->run_direct(abs(right_motor_speed), right_motor_inverted ? right_motor_speed > 0 : right_motor_speed < 0);
+  
+  std::this_thread::sleep_for(std::chrono::milliseconds(time_ms));
+  
+  left_motor->run_direct(0); // reseting polarity propably not needed
+  right_motor->run_direct(0); // reseting polarity propably not needed
+  left_motor->stop(stop_action);
+  right_motor->stop(stop_action);
 }
 
 void Diferential_drive::rotate_to_abs_angle(float angle, float precision, int max_speed){
@@ -195,7 +207,7 @@ void Diferential_drive::rotate_to_abs_angle(float angle, float precision, int ma
     angle_dif = normalize_angle(position.angle - angle);
   }
 
-  //resets polarity
+  // resets polarity propably not needed
   left_motor->run_direct(0);
   right_motor->run_direct(0);
 

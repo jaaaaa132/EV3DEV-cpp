@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dl0msvbop0uik"]
+[gd_scene load_steps=19 format=3 uid="uid://dl0msvbop0uik"]
 
 [ext_resource type="PackedScene" uid="uid://bla2n3dgrjn38" path="res://blocks/comment_block.tscn" id="1_fyqef"]
 [ext_resource type="Script" uid="uid://bf3bnbmi61x67" path="res://scripts/save.gd" id="1_m6e0p"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://blg247t2lkbx1" path="res://blocks/go_curved_to_pos_block.tscn" id="7_y4yjw"]
 [ext_resource type="PackedScene" uid="uid://pn0evxeknd0v" path="res://blocks/rotate_to_angle_block.tscn" id="8_waa4j"]
 [ext_resource type="PackedScene" uid="uid://bud64bacnbqft" path="res://blocks/rotate_to_pos_block.tscn" id="9_ok7cu"]
+[ext_resource type="PackedScene" uid="uid://bet5410coqg46" path="res://blocks/move_tank_direct_timed_block.tscn" id="9_os5c7"]
 [ext_resource type="PackedScene" uid="uid://cr0btgwhxm1ft" path="res://blocks/arm_wait_block.tscn" id="10_7rqds"]
 [ext_resource type="PackedScene" uid="uid://c3vvonq7bgyw0" path="res://blocks/arm_stop_block.tscn" id="10_irxef"]
 [ext_resource type="PackedScene" uid="uid://nx40j8t8v5b0" path="res://blocks/arm_run_block.tscn" id="11_e2l4f"]
@@ -99,6 +100,7 @@ auto_translate_mode = 1
 title = "Open a File"
 ok_button_text = "Open"
 file_mode = 0
+access = 2
 
 [node name="Comment" type="BlockSpawner" parent="overlay"]
 scene = ExtResource("1_fyqef")
@@ -168,6 +170,29 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_ibotj")
 text = "GOTOPOSCURVED"
+
+[node name="MoveTankDirectTimed" type="BlockSpawner" parent="overlay"]
+scene = ExtResource("9_os5c7")
+self_modulate = Color(0.192157, 0.117647, 0.690196, 1)
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme = ExtResource("1_nltto")
+
+[node name="Label" type="Label" parent="overlay/MoveTankDirectTimed"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "MOVETANKDIRECTTIMED"
 
 [node name="RotateToAngle" type="BlockSpawner" parent="overlay"]
 scene = ExtResource("8_waa4j")

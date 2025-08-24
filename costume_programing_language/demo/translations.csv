@@ -9,6 +9,10 @@ GOSTRAIGHTTO,go straight to,choď primo na
 ANGLEPRECISION,"angle precision, rad, FLOAT","presnosť uhla, rad, FLOAT"
 GOTOPOSCURVED,go to position curved,choď na pozíciu krivkou
 GOCURVEDTO,go curved to,choď krivkou na
+MOVETANKDIRECTTIMED,move tank with force,choď ako tank so silou
+LEFTMOTORFORCE,"left motor speed, INT 0<->100","rýchlosť lavého motora, INT 0<->100"
+RIGHTMOTORFORCE,"right motor speed, INT 0<->100","rýchlosť pravého motora, INT 0<->100"
+TIME_MS,"time, ms, INT","čas, ms, INT"
 PRECISION,"precision, cm, FLOAT","presnosť, cm, FLOAT"
 MAXSPEED,"max speed, INT 0<->100","maximálna rýchlosť, INT 0<->100"
 FORWARDONLY,forward only,choď iba dopredu
