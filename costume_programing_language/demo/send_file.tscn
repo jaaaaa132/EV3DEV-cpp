@@ -1,0 +1,159 @@
+[gd_scene load_steps=7 format=3 uid="uid://2pdctbgme4rd"]
+
+[ext_resource type="Theme" uid="uid://m1x1dnq04rcs" path="res://blocks/block_theme.tres" id="1_0crxs"]
+[ext_resource type="Script" uid="uid://d4c8x07fdgo4i" path="res://send_file_to_robot.gd" id="2_5shby"]
+[ext_resource type="Theme" uid="uid://bl1ypr528580u" path="res://blocks/block_theme_text.tres" id="2_ohrhl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lx8mh"]
+bg_color = Color(0.33, 0.33, 1, 1)
+
+[sub_resource type="Theme" id="Theme_ncch4"]
+Panel/styles/panel = SubResource("StyleBoxFlat_lx8mh")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5shby"]
+bg_color = Color(0.2967, 0.2967, 0.69, 1)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="."]
+self_modulate = Color(0.117647, 0.117647, 0.690196, 1)
+custom_minimum_size = Vector2(400, 40)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4
+anchor_right = 0.6
+anchor_bottom = 0.04
+grow_horizontal = 2
+theme = ExtResource("1_0crxs")
+script = ExtResource("2_5shby")
+
+[node name="Label" type="Label" parent="Button"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -126.5
+offset_top = -17.5
+offset_right = 126.5
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_ohrhl")
+text = "SENDFILETOROBOT"
+
+[node name="Panel" type="Panel" parent="Button"]
+custom_minimum_size = Vector2(0, 250)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = SubResource("Theme_ncch4")
+
+[node name="Options" type="Panel" parent="Button/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.04
+anchor_top = 0.07
+anchor_right = 0.96
+anchor_bottom = 0.7
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5shby")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Button/Panel/Options"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.03
+anchor_top = 0.1
+anchor_right = 0.97
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="File" type="Button" parent="Button/Panel/Options/VBoxContainer"]
+self_modulate = Color(0.117647, 0.117647, 0.690196, 1)
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme = ExtResource("1_0crxs")
+
+[node name="Label" type="Label" parent="Button/Panel/Options/VBoxContainer/File"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_ohrhl")
+text = "PICKFILE"
+horizontal_alignment = 1
+
+[node name="Load" type="FileDialog" parent="Button/Panel/Options/VBoxContainer/File"]
+title = "Open a File"
+initial_position = 1
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Button/Panel/Options/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Button/Panel/Options/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_ohrhl")
+text = "IPADDRESS"
+
+[node name="IP" type="LineEdit" parent="Button/Panel/Options/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_ohrhl")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Button/Panel/Options/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Button/Panel/Options/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_ohrhl")
+text = "ROBOTFILEADDRESS"
+
+[node name="RobotFileAddress" type="LineEdit" parent="Button/Panel/Options/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_ohrhl")
+
+[node name="Send" type="Button" parent="Button/Panel"]
+self_modulate = Color(0.117647, 0.117647, 0.690196, 1)
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+offset_left = 16.0
+offset_top = 197.035
+offset_right = 384.0
+offset_bottom = 237.035
+theme = ExtResource("1_0crxs")
+
+[node name="Label" type="Label" parent="Button/Panel/Send"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_ohrhl")
+text = "SEND"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="Button" to="Button" method="_on_pressed"]
+[connection signal="pressed" from="Button/Panel/Options/VBoxContainer/File" to="Button" method="_on_file_button_pressed"]
+[connection signal="file_selected" from="Button/Panel/Options/VBoxContainer/File/Load" to="Button" method="_on_file_selected"]
+[connection signal="pressed" from="Button/Panel/Send" to="Button" method="_on_send_pressed"]
