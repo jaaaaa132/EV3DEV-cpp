@@ -28,7 +28,7 @@ func _on_load_pressed() -> void:
 
 func _on_save_file_dialog_file_selected(path: String) -> void:
 	var base_width = float($Panel/VBoxContainer/BaseWidth/LineEdit.text)
-	var wheel_diameter = float($Panel/VBoxContainer/WheelDiameter/LineEdit.text)
+	var wheel_circumference = float($Panel/VBoxContainer/WheelCircumference/LineEdit.text)
 	var starting_position_x = float($Panel/VBoxContainer/StartingPosition/Values/LineEditX.text)
 	var starting_position_y = float($Panel/VBoxContainer/StartingPosition/Values/LineEditY.text)
 	var starting_position_angle = float($Panel/VBoxContainer/StartingPosition/Values/LineEditAngle.text)
@@ -36,7 +36,7 @@ func _on_save_file_dialog_file_selected(path: String) -> void:
 	var right_motor_inversed = bool($"Panel/VBoxContainer/Motors inversed/StartingPosition/CheckBoxRightMotor".button_pressed)
 	
 	var save_file = FileAccess.open(path,FileAccess.WRITE)
-	save_file.store_line(str(base_width) + " " + str(wheel_diameter))
+	save_file.store_line(str(base_width) + " " + str(wheel_circumference))
 	save_file.store_line(str(starting_position_x) + " " + str(starting_position_y) + " " + str(starting_position_angle))
 	save_file.store_line(str(int(left_motor_inversed)) + " " + str(int(right_motor_inversed)))
 
