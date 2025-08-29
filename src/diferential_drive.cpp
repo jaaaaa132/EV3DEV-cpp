@@ -117,7 +117,7 @@ void Diferential_drive::go_to_position_curve(Position target_position, float pre
     const float P_angle_const = 2.5;
     //const float D_angle_const = 0; // D not needed should be removed from equsion not tested if works
     const float P_distance_const = 4.5;
-    float angular_modifier = 1 - fmin(1, fmax(0, abs(fmin(abs(goal_angle_diffrence),abs(pi - goal_angle_diffrence)) / (pi / 2) * P_angle_const /*+ (last_goal_angle_diffrence - goal_angle_diffrence) / time_span.count() * D_angle_const*/) / wheel_circumference * wheel_base_width));  
+    float angular_modifier = 1 - fmin(1, fmax(0, abs(fmin(abs(goal_angle_diffrence),abs(pi - goal_angle_diffrence) + forward_only * 10) / (pi / 2) * P_angle_const /*+ (last_goal_angle_diffrence - goal_angle_diffrence) / time_span.count() * D_angle_const*/) / wheel_circumference * wheel_base_width));  
     float speed_modifier = fmin(1, fmax(0, goal_distance / P_distance_const * wheel_circumference));
         
     int left_motor_speed = max_motor_speed * speed_modifier, right_motor_speed = max_motor_speed * speed_modifier;
@@ -128,7 +128,7 @@ void Diferential_drive::go_to_position_curve(Position target_position, float pre
 
     // forwards or backwards
     bool backwards = false;
-    if(abs(goal_angle_diffrence) > pi / 2 && !forward_only){
+    if(abs(goal_angle_diffrence) > (pi / 2) && !forward_only){
       backwards = true;
     }
     try{  
