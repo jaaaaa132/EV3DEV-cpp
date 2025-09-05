@@ -17,6 +17,7 @@ func _on_pressed() -> void:
 
 
 func _on_file_dialog_file_selected(path: String) -> void:	
-	var map_texture = get_node("/root/main/Map/Map/AspectRatioContainer/TextureRect")
-	map_texture.texture = load(path)
+	#var map_texture = get_node("/root/main/Map/Map/AspectRatioContainer/TextureRect")
+	#map_texture.texture = load(path)
+	pass
 	

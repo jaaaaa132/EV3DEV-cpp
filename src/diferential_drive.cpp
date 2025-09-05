@@ -13,8 +13,15 @@ float Diferential_drive::normalize_angle(float angle){ // returns value in inter
 }
 
 void Diferential_drive::track_position(){
-  Position p_position;
-  int left_motor_last_pos, right_motor_last_pos;
+  Position p_position = position;
+  int left_motor_last_pos, right_motor_last_pos, angle_last;
+
+  if(gyro->is_connected()) angle_last = gyro->get_value(0);
+  else{
+    angle_last = 32769; // gyro cannot reach this vallue, see: https://docs.ev3dev.org/projects/lego-linux-drivers/en/ev3dev-stretch/sensor_data.html#lego-ev3-gyro
+    std::cout << "gyro not connected" << std::endl;
+		std::cerr << "gyro not connected" << std::endl;
+  }
 
   try{ // trying once again (already implemented in motor.cpp)
     // relies on setting position to high value
@@ -34,8 +41,8 @@ void Diferential_drive::track_position(){
   }
 
   while(tracking_position.load()){
-    p_position = position;
-    int left_motor_pos, right_motor_pos;
+    int left_motor_pos, right_motor_pos, angle;
+    angle = gyro->get_value(0);
     
     try{ // trying once again (already implemented in motor.cpp) 
       left_motor_pos = abs(left_motor->get_position());
@@ -58,7 +65,9 @@ void Diferential_drive::track_position(){
     float left_wheel_dist = wheel_circumference * left_motor_pos_dif / 360;
     float right_wheel_dist = wheel_circumference * right_motor_pos_dif / 360;
     float average_distance = (left_wheel_dist + right_wheel_dist) / 2;
-    float orientation_dif = (right_wheel_dist - left_wheel_dist) / wheel_base_width;
+    float orientation_dif;
+    if(gyro->is_connected() && abs(angle - angle_last) > 3) orientation_dif = (angle_last - angle) / 180 * pi;  // WARNING gyro measures in deg
+    else orientation_dif = (right_wheel_dist - left_wheel_dist) / wheel_base_width;
     p_position.x -= average_distance * sin(position.angle + orientation_dif / 2);
     p_position.y += average_distance * cos(position.angle + orientation_dif / 2);
     p_position.angle += orientation_dif;
@@ -66,22 +75,25 @@ void Diferential_drive::track_position(){
     position = p_position;
     left_motor_last_pos = left_motor_pos;
     right_motor_last_pos = right_motor_pos;
+    angle_last = angle;
     //std::cout << position.x << " " << position.y << " " << position.angle << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
   }
 }
 
-Diferential_drive::Diferential_drive(Motor& p_left_motor, Motor& p_right_motor, float p_wheel_base_width, float p_wheel_circumference, bool p_left_motor_inverted, bool p_right_motor_inverted, Position starting_position): 
+Diferential_drive::Diferential_drive(Motor& p_left_motor, Motor& p_right_motor, Sensor& p_gyro, float p_wheel_base_width, float p_wheel_circumference, bool p_left_motor_inverted, bool p_right_motor_inverted, Position starting_position): 
   left_motor(&p_left_motor),
   right_motor(&p_right_motor), 
   left_motor_inverted(p_left_motor_inverted),      
   right_motor_inverted(p_right_motor_inverted),
+  gyro(&p_gyro),
   wheel_base_width(p_wheel_base_width),
   wheel_circumference(p_wheel_circumference){
       
   position = starting_position;
   left_motor->set_position(1000000);  // large value so tracking would work with run_direct
   right_motor->set_position(1000000);
+  gyro->set_mode("GYRO-ANG");
   tracking_position.store(true);
   position_tracker = std::thread(&Diferential_drive::track_position, this);
 }
