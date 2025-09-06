@@ -42,7 +42,7 @@ void Diferential_drive::track_position(){
 
   while(tracking_position.load()){
     int left_motor_pos, right_motor_pos, angle;
-    angle = gyro->get_value(0);
+    if(gyro->is_connected()) angle = gyro->get_value(0);
     
     try{ // trying once again (already implemented in motor.cpp) 
       left_motor_pos = abs(left_motor->get_position());
