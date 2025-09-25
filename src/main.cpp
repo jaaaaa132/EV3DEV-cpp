@@ -65,6 +65,27 @@ int main (){
 		}
 	}
 
+	// fun experiment 
+	int run;
+	std::fstream("runs.txt", std::ios::in) >> run;
+	run++;
+	std::fstream("runs.txt", std::ios::out | std::ios::trunc) << run;
+
+	// Move motors to mechanical limit (max angle) for consistent alignment
+	motors.at(0).run_direct(30, true);
+	motors.at(3).run_direct(30, true);
+
+	// wait for midle button
+	while(true) if (button_input.read(reinterpret_cast<char*>(&button_event), sizeof(button_event))){ 
+		if (button_event.type == EV_KEY && button_event.value == 1 && button_event.code == KEY_ENTER) break;
+		std::this_thread::sleep_for(std::chrono::milliseconds(5));
+	}
+	
+	motors.at(0).stop("brake");
+	motors.at(0).set_position(0);
+	motors.at(3).stop("brake");
+	motors.at(3).set_position(0);
+
 	std::fstream configuration_file("robot.conf");
 	float base_width, wheel_diameter, starting_position_x, starting_position_y, starting_position_angle;
 	bool left_motor_inverted, right_motor_inverted;
