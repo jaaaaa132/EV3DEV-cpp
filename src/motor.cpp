@@ -1,6 +1,7 @@
 #include "motor.h"
 #include <cmath>
 #include <fstream>
+#include <ratio>
 #include <stdexcept>
 #include <string>
 #include <chrono>
@@ -204,6 +205,32 @@ void Motor::run_direct(int duty_cycle, bool inverted){
   duty_cycle_file.flush();
   command_file << "run-direct";
   command_file.flush();
+}
+
+void Motor::run_direct_for_time(int duty_cycle, int time_ms, bool inverted, std::string stop_action){
+  if(!are_files_opened()){
+    open_files();
+		if(!are_files_opened()) throw std::runtime_error("cann't open files from: " + directory);
+  }
+
+  if(inverted){
+    polarity_file << "inversed";
+  }
+  else{
+    polarity_file << "normal";
+  }
+  polarity_file.flush();
+
+  duty_cycle_file << std::to_string(duty_cycle);
+  duty_cycle_file.flush();
+  command_file << "run-direct";
+  command_file.flush();
+
+  std::thread t([this, time_ms, stop_action]() {
+    std::this_thread::sleep_for(std::chrono::milliseconds(time_ms));
+    stop(stop_action);
+  });
+  t.detach();
 }
 
 std::string Motor::get_state(){

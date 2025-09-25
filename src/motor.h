@@ -40,6 +40,7 @@ public:
   void run_for_time(int time_ms, int speed, std::string stop_action = "hold");
   void stop(std::string stop_action = "hold");
   void run_direct(int duty_cycle, bool inverted = false);
+  void run_direct_for_time(int duty_cycle, int time_ms, bool inverted = false, std::string stop_action = "hold");
   std::string get_state();
   int get_position();
   void set_position(int new_position);
