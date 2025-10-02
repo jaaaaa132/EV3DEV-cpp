@@ -1,7 +1,6 @@
 #include "motor.h"
 #include <cmath>
 #include <fstream>
-#include <ratio>
 #include <stdexcept>
 #include <string>
 #include <chrono>

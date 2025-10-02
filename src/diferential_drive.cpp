@@ -107,6 +107,16 @@ Position Diferential_drive::live_position(){
   return position;
 }
 
+void Diferential_drive::reset_position(Position new_position){
+  tracking_position.store(false);
+  position_tracker.join();
+  position = new_position;
+  left_motor->set_position(1000000);  // large value so tracking would work with run_direct
+  right_motor->set_position(1000000);
+  tracking_position.store(true);
+  position_tracker = std::thread(&Diferential_drive::track_position, this);
+}
+
 void Diferential_drive::go_to_position_curve(Position target_position, float precision, int max_motor_speed, bool forward_only){
   // comented out Derivative calculation
 

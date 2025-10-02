@@ -32,6 +32,7 @@ class Diferential_drive {
     ~Diferential_drive();
 
     Position live_position();
+    void reset_position(Position new_position);
 
     void go_to_position_curve(Position target_position, float precision, int max_motor_speed = 100, bool forward_only = false); // angle in position is ignored
     void go_to_position_straight(Position target_position, float angle_precision, int max_motor_speed = 100, bool forward_only = false); // angle in position is ignored

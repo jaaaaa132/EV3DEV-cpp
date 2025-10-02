@@ -22,6 +22,7 @@ void Robot::follow_program(std::string file_path){
   Motor* arm = nullptr;
   while(file >> action){
     switch(action){
+      case'O': for(int i = 0; i < 3; i++) file >> arguments[i]; reset_position(Position(stof(arguments[0]), stof(arguments[1]), stof(arguments[2]))); break;
       case'K': file.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); break;
       case'S': for(int i = 0; i < 5; i++) file >> arguments[i]; go_to_position_straight(Position(stof(arguments[0]), stof(arguments[1]), 0), stof(arguments[2]), stoi(arguments[3]), "1" == arguments[4]);  break;
       case'C': for(int i = 0; i < 5; i++) file >> arguments[i]; go_to_position_curve(Position(stof(arguments[0]), stof(arguments[1]), 0), stof(arguments[2]), stoi(arguments[3]), "1" == arguments[4]);  break; 
