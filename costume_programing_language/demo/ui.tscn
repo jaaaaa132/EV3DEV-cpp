@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://dl0msvbop0uik"]
+[gd_scene load_steps=74 format=3 uid="uid://dl0msvbop0uik"]
 
 [ext_resource type="PackedScene" uid="uid://bla2n3dgrjn38" path="res://blocks/comment_block.tscn" id="1_fyqef"]
 [ext_resource type="Script" uid="uid://bf3bnbmi61x67" path="res://scripts/save.gd" id="1_m6e0p"]
@@ -19,6 +19,16 @@
 [ext_resource type="PackedScene" uid="uid://dgjopp23cr406" path="res://blocks/arm_run_to_rel_block.tscn" id="13_gs482"]
 [ext_resource type="PackedScene" uid="uid://dych5if6csj47" path="res://blocks/arm_run_timed_block.tscn" id="14_cxd00"]
 [ext_resource type="PackedScene" uid="uid://cw3qcsklfhfix" path="res://blocks/arm_run_direct_block.tscn" id="15_etlur"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_b2p7n"]
+device = -1
+ctrl_pressed = true
+pressed = true
+keycode = 83
+unicode = 115
+
+[sub_resource type="Shortcut" id="Shortcut_vkygq"]
+events = [SubResource("InputEventKey_b2p7n")]
 
 [sub_resource type="Image" id="Image_b2p7n"]
 data = {
@@ -198,13 +208,123 @@ FileDialog/icons/save = SubResource("ImageTexture_gqeas")
 FileDialog/icons/toggle_filename_filter = SubResource("ImageTexture_u1fh6")
 FileDialog/icons/toggle_hidden = SubResource("ImageTexture_4gg1n")
 
+[sub_resource type="InputEventKey" id="InputEventKey_vkygq"]
+device = -1
+keycode = 75
+unicode = 107
+
+[sub_resource type="Shortcut" id="Shortcut_sosvr"]
+events = [SubResource("InputEventKey_vkygq")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_ndy3v"]
+device = -1
+keycode = 83
+unicode = 115
+
+[sub_resource type="Shortcut" id="Shortcut_x2s2p"]
+events = [SubResource("InputEventKey_ndy3v")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_v8jk5"]
+device = -1
+keycode = 67
+unicode = 99
+
+[sub_resource type="Shortcut" id="Shortcut_cka8k"]
+events = [SubResource("InputEventKey_v8jk5")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_53buu"]
+device = -1
+keycode = 84
+unicode = 116
+
+[sub_resource type="Shortcut" id="Shortcut_7w61g"]
+events = [SubResource("InputEventKey_53buu")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_ccnxy"]
+device = -1
+keycode = 65
+unicode = 97
+
+[sub_resource type="Shortcut" id="Shortcut_r2460"]
+events = [SubResource("InputEventKey_ccnxy")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_gxnlh"]
+device = -1
+keycode = 80
+unicode = 112
+
+[sub_resource type="Shortcut" id="Shortcut_w05v2"]
+events = [SubResource("InputEventKey_gxnlh")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_v463t"]
+device = -1
+shift_pressed = true
+keycode = 87
+unicode = 87
+
+[sub_resource type="Shortcut" id="Shortcut_2u0ql"]
+events = [SubResource("InputEventKey_v463t")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_r4oxx"]
+device = -1
+shift_pressed = true
+keycode = 83
+unicode = 83
+
+[sub_resource type="Shortcut" id="Shortcut_i2v2c"]
+events = [SubResource("InputEventKey_r4oxx")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_qvlql"]
+device = -1
+shift_pressed = true
+keycode = 82
+unicode = 82
+
+[sub_resource type="Shortcut" id="Shortcut_gqeas"]
+events = [SubResource("InputEventKey_qvlql")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_2ydj3"]
+device = -1
+shift_pressed = true
+keycode = 65
+unicode = 65
+
+[sub_resource type="Shortcut" id="Shortcut_u1fh6"]
+events = [SubResource("InputEventKey_2ydj3")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_0c0hj"]
+device = -1
+shift_pressed = true
+keycode = 77
+unicode = 77
+
+[sub_resource type="Shortcut" id="Shortcut_4gg1n"]
+events = [SubResource("InputEventKey_0c0hj")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_4n3bm"]
+device = -1
+shift_pressed = true
+keycode = 84
+unicode = 84
+
+[sub_resource type="Shortcut" id="Shortcut_nph28"]
+events = [SubResource("InputEventKey_4n3bm")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_jgnrw"]
+device = -1
+shift_pressed = true
+keycode = 68
+unicode = 68
+
+[sub_resource type="Shortcut" id="Shortcut_vgsgi"]
+events = [SubResource("InputEventKey_jgnrw")]
+
 [node name="Control" type="CanvasLayer"]
 
 [node name="RobotConstants" parent="." instance=ExtResource("1_nvb2n")]
 mouse_filter = 2
 
-[node name="Control" parent="." instance=ExtResource("2_b2p7n")]
-visible = false
+[node name="SendFile" parent="." instance=ExtResource("2_b2p7n")]
 mouse_filter = 2
 
 [node name="OverlayBackground" type="ColorRect" parent="."]
@@ -231,6 +351,7 @@ custom_minimum_size = Vector2(75, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_nltto")
+shortcut = SubResource("Shortcut_vkygq")
 script = ExtResource("1_m6e0p")
 
 [node name="Label" type="Label" parent="overlay/FileManipulation/Save"]
@@ -295,6 +416,7 @@ self_modulate = Color(0.69, 0.46092, 0.1173, 1)
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme = ExtResource("1_nltto")
+shortcut = SubResource("Shortcut_sosvr")
 
 [node name="Label" type="Label" parent="overlay/Comment"]
 layout_mode = 1
@@ -318,6 +440,7 @@ self_modulate = Color(0.1173, 0.59455, 0.69, 1)
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme = ExtResource("1_nltto")
+shortcut = SubResource("Shortcut_x2s2p")
 
 [node name="Label" type="Label" parent="overlay/GoToPosStraight"]
 layout_mode = 1
@@ -341,6 +464,7 @@ self_modulate = Color(0.1173, 0.34638, 0.69, 1)
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme = ExtResource("1_nltto")
+shortcut = SubResource("Shortcut_cka8k")
 
 [node name="Label" type="Label" parent="overlay/GoToPosCurved"]
 layout_mode = 1
@@ -364,6 +488,7 @@ self_modulate = Color(0.192157, 0.117647, 0.690196, 1)
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme = ExtResource("1_nltto")
+shortcut = SubResource("Shortcut_7w61g")
 
 [node name="Label" type="Label" parent="overlay/MoveTankDirectTimed"]
 layout_mode = 1
@@ -387,6 +512,7 @@ self_modulate = Color(0.69, 0.1173, 0.65182, 1)
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme = ExtResource("1_nltto")
+shortcut = SubResource("Shortcut_r2460")
 
 [node name="Label" type="Label" parent="overlay/RotateToAngle"]
 layout_mode = 1
@@ -410,6 +536,7 @@ self_modulate = Color(0.40365, 0.1173, 0.69, 1)
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme = ExtResource("1_nltto")
+shortcut = SubResource("Shortcut_w05v2")
 
 [node name="Label" type="Label" parent="overlay/RotateToPosition"]
 layout_mode = 1
@@ -433,6 +560,7 @@ self_modulate = Color(0.69, 0.3082, 0.1173, 1)
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme = ExtResource("1_nltto")
+shortcut = SubResource("Shortcut_2u0ql")
 
 [node name="Label" type="Label" parent="overlay/ArmWait"]
 layout_mode = 1
@@ -456,6 +584,7 @@ self_modulate = Color(0.69, 0.1173, 0.1173, 1)
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme = ExtResource("1_nltto")
+shortcut = SubResource("Shortcut_i2v2c")
 
 [node name="Label" type="Label" parent="overlay/ArmStop"]
 layout_mode = 1
@@ -479,6 +608,7 @@ self_modulate = Color(0.69, 0.65182, 0.1173, 1)
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme = ExtResource("1_nltto")
+shortcut = SubResource("Shortcut_gqeas")
 
 [node name="Label" type="Label" parent="overlay/ArmRun"]
 layout_mode = 1
@@ -502,6 +632,7 @@ self_modulate = Color(0.55637, 0.69, 0.1173, 1)
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme = ExtResource("1_nltto")
+shortcut = SubResource("Shortcut_u1fh6")
 
 [node name="Label" type="Label" parent="overlay/ArmRunToAbs"]
 layout_mode = 1
@@ -525,6 +656,7 @@ self_modulate = Color(0.40365, 0.69, 0.1173, 1)
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme = ExtResource("1_nltto")
+shortcut = SubResource("Shortcut_4gg1n")
 
 [node name="Label" type="Label" parent="overlay/ArmRunToRel"]
 layout_mode = 1
@@ -548,6 +680,7 @@ self_modulate = Color(0.1173, 0.69, 0.21275, 1)
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme = ExtResource("1_nltto")
+shortcut = SubResource("Shortcut_nph28")
 
 [node name="Label" type="Label" parent="overlay/ArmRunTimed"]
 layout_mode = 1
@@ -571,6 +704,7 @@ self_modulate = Color(0.1173, 0.69, 0.4991, 1)
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 theme = ExtResource("1_nltto")
+shortcut = SubResource("Shortcut_vgsgi")
 
 [node name="Label" type="Label" parent="overlay/ArmRunDirect"]
 layout_mode = 1
