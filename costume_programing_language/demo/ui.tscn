@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://dl0msvbop0uik"]
+[gd_scene load_steps=75 format=3 uid="uid://dl0msvbop0uik"]
 
 [ext_resource type="PackedScene" uid="uid://bla2n3dgrjn38" path="res://blocks/comment_block.tscn" id="1_fyqef"]
 [ext_resource type="Script" uid="uid://bf3bnbmi61x67" path="res://scripts/save.gd" id="1_m6e0p"]
@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://dgjopp23cr406" path="res://blocks/arm_run_to_rel_block.tscn" id="13_gs482"]
 [ext_resource type="PackedScene" uid="uid://dych5if6csj47" path="res://blocks/arm_run_timed_block.tscn" id="14_cxd00"]
 [ext_resource type="PackedScene" uid="uid://cw3qcsklfhfix" path="res://blocks/arm_run_direct_block.tscn" id="15_etlur"]
+[ext_resource type="PackedScene" uid="uid://b2e8xuihoderg" path="res://blocks/reset_position.tscn" id="20_vkygq"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_b2p7n"]
 device = -1
@@ -721,6 +722,30 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_ibotj")
 text = "ARMRUNDIRECT"
+
+[node name="ResetPosition" type="BlockSpawner" parent="overlay"]
+scene = ExtResource("20_vkygq")
+self_modulate = Color(0.1173, 0.69, 0.4991, 1)
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme = ExtResource("1_nltto")
+shortcut = SubResource("Shortcut_vgsgi")
+
+[node name="Label" type="Label" parent="overlay/ResetPosition"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.5
+offset_right = 20.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ibotj")
+text = "RESETPOSITION"
 
 [connection signal="pressed" from="overlay/FileManipulation/Save" to="overlay/FileManipulation/Save" method="_on_pressed"]
 [connection signal="pressed" from="overlay/FileManipulation/Load" to="overlay/FileManipulation/Load" method="_on_pressed"]

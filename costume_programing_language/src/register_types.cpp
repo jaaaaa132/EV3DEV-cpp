@@ -24,6 +24,7 @@ void initialize_example_module(ModuleInitializationLevel p_level) {
 	GDREGISTER_RUNTIME_CLASS(MoveTankDirectTimedBlock);
 	GDREGISTER_RUNTIME_CLASS(RotateToAngleBlock);
 	GDREGISTER_RUNTIME_CLASS(RotateToPositionBlock);
+	GDREGISTER_RUNTIME_CLASS(ResetPositionBlock);
 	GDREGISTER_RUNTIME_CLASS(ArmStopBlock);
 	GDREGISTER_RUNTIME_CLASS(ArmRunBlock);
 	GDREGISTER_RUNTIME_CLASS(ArmRunToAbsBlock);

@@ -57,6 +57,9 @@ void MainBlock::load(String path) {
 
         Ref<PackedScene> block = nullptr;
         switch(words[0][0]) {
+            case 'O': // ResetPosition block
+                block = ResourceLoader::get_singleton()->load("res://blocks/reset_position.tscn");
+                break;
             case 'K': // Comment block
                 block = ResourceLoader::get_singleton()->load("res://blocks/comment_block.tscn");
                 break;
@@ -395,6 +398,50 @@ void RotateToPositionBlock::set_parameters(PackedStringArray parameters) {
     angle_precision->set_text(parameters[2]);
     max_speed->set_text(parameters[3]);
     angle_offset->set_text(parameters[4]);
+}
+
+// ResetPositionBlock
+void ResetPositionBlock::_bind_methods(){
+
+}
+
+ResetPositionBlock::ResetPositionBlock(): Block() {
+    
+}
+
+ResetPositionBlock::~ResetPositionBlock() {
+    Block::~Block();
+}
+
+void ResetPositionBlock::_ready() {
+    Block::_ready();
+
+    // getting block parameters
+    x = get_node<LineEdit>("Button/HBoxContainer/X");
+    y = get_node<LineEdit>("Button/HBoxContainer/Y");
+    angle = get_node<LineEdit>("Button/HBoxContainer/Angle");
+}
+
+String ResetPositionBlock::write() {
+    if(x == nullptr || y == nullptr || angle == nullptr) {
+        UtilityFunctions::push_error("ResetPositionBlock parameters not set correctly!");
+        return "error\n";
+    }
+    String command = "O " + x->get_text() + " " + y->get_text() + " " + angle->get_text() + "\n";
+    if (next != nullptr) command += next->write();
+    return command;
+}
+
+void ResetPositionBlock::set_parameters(PackedStringArray parameters) {
+    if(parameters.size() < 3) return;
+    UtilityFunctions::print("Setting values for ResetPositionBlock");
+    if(x == nullptr || y == nullptr || angle == nullptr){
+        UtilityFunctions::push_error("ResetPositionBlock parameters not set correctly!");
+        return;
+    }
+    x->set_text(parameters[0]);
+    y->set_text(parameters[1]);
+    angle->set_text(parameters[2]);
 }
 
 // ArmStopBlock

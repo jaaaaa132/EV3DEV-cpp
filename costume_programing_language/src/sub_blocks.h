@@ -141,6 +141,25 @@ public:
     void set_parameters(PackedStringArray parameters) override;
 };
 
+class ResetPositionBlock : public Block {
+    GDCLASS(ResetPositionBlock, Block)
+private:
+protected:
+    static void _bind_methods();
+    LineEdit *x = nullptr;
+    LineEdit *y = nullptr;
+    LineEdit *angle = nullptr; 
+
+public:
+    ResetPositionBlock();
+    ~ResetPositionBlock();
+
+    void _ready() override;
+
+    String write() override;
+    void set_parameters(PackedStringArray parameters) override;
+};
+
 class ArmStopBlock : public Block {
     GDCLASS(ArmStopBlock, Block)
 private:
@@ -263,8 +282,6 @@ private:
 protected:
     static void _bind_methods();
     OptionButton *arm = nullptr;
-    LineEdit *speed = nullptr;
-    CheckBox *reversed = nullptr; 
 
 public:
     ArmWaitBlock();

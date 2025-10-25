@@ -1,0 +1,85 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2e8xuihoderg"]
+
+[ext_resource type="Theme" uid="uid://m1x1dnq04rcs" path="res://blocks/block_theme.tres" id="1_w232p"]
+[ext_resource type="Theme" uid="uid://bl1ypr528580u" path="res://blocks/block_theme_text.tres" id="2_h3f0k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_54lax"]
+
+[node name="Block" type="ResetPositionBlock"]
+
+[node name="Button" type="Button" parent="."]
+self_modulate = Color(0.1173, 0.69, 0.4991, 1)
+custom_minimum_size = Vector2(0, 50)
+offset_right = 601.0
+offset_bottom = 50.0
+theme = ExtResource("1_w232p")
+alignment = 0
+icon_alignment = 1
+expand_icon = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Button"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="Container" type="Container" parent="Button/HBoxContainer"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Button/HBoxContainer"]
+custom_minimum_size = Vector2(225.785, 0)
+layout_mode = 2
+theme = ExtResource("2_h3f0k")
+text = "RESETPOSITION"
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="X" type="LineEdit" parent="Button/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+tooltip_text = "x, in cm, NAN mens keep original value"
+theme_override_font_sizes/font_size = 20
+text = "NAN"
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Y" type="LineEdit" parent="Button/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+tooltip_text = "y, in cm, NAN mens keep original value"
+theme_override_font_sizes/font_size = 20
+text = "NAN"
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Angle" type="LineEdit" parent="Button/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+tooltip_text = "angle, in Rad, NAN mens keep original value"
+theme_override_font_sizes/font_size = 20
+text = "NAN"
+alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+priority = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(165, -51.215)
+scale = Vector2(13, 4)
+shape = SubResource("RectangleShape2D_54lax")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+visible = false
+collision_mask = 0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(165, 25)
+scale = Vector2(17, 3)
+shape = SubResource("RectangleShape2D_54lax")
