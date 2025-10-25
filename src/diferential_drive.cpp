@@ -1,6 +1,5 @@
 #include"diferential_drive.h"
 #include "position.h"
-#include <algorithm>
 #include <cmath>
 #include <fstream>
 #include <stdexcept>
@@ -110,9 +109,14 @@ Position Diferential_drive::live_position(){
 void Diferential_drive::reset_position(Position new_position){
   tracking_position.store(false);
   position_tracker.join();
+  
+  if(new_position.x == NAN) new_position.x = position.x;
+  if(new_position.y == NAN) new_position.y = position.y;
+  if(new_position.angle == NAN) new_position.angle = position.angle;
   position = new_position;
   left_motor->set_position(1000000);  // large value so tracking would work with run_direct
   right_motor->set_position(1000000);
+  
   tracking_position.store(true);
   position_tracker = std::thread(&Diferential_drive::track_position, this);
 }
