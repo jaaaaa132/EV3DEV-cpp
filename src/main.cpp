@@ -1,7 +1,9 @@
+#include <chrono>
 #include <iostream>
 #include <array>
 #include <fstream>
 #include <linux/input.h>
+#include <thread>
 #include <unistd.h>
 #include "position.h"
 #include "motor.h"
@@ -70,6 +72,13 @@ int main (){
 	std::fstream("runs.txt", std::ios::in) >> run;
 	run++;
 	std::fstream("runs.txt", std::ios::out | std::ios::trunc) << run;
+	
+	std::fstream configuration_file("robot.conf");
+	float base_width, wheel_diameter, starting_position_x, starting_position_y, starting_position_angle;
+	bool left_motor_inverted, right_motor_inverted;
+	configuration_file >> base_width >> wheel_diameter >> starting_position_x >> starting_position_y >> starting_position_angle >> left_motor_inverted >> right_motor_inverted;
+	Robot robot(motors.at(0), motors.at(3), motors.at(1), motors.at(2), sensors.at(0), base_width, wheel_diameter, left_motor_inverted, right_motor_inverted, Position(starting_position_x, starting_position_y, starting_position_angle));
+	configuration_file.close();
 
 	// Move motors to mechanical limit (max angle) for consistent alignment
 	motors.at(0).run_direct(30, true);
@@ -86,13 +95,9 @@ int main (){
 	motors.at(3).stop("brake");
 	motors.at(3).set_position(0);
 
-	std::fstream configuration_file("robot.conf");
-	float base_width, wheel_diameter, starting_position_x, starting_position_y, starting_position_angle;
-	bool left_motor_inverted, right_motor_inverted;
-	configuration_file >> base_width >> wheel_diameter >> starting_position_x >> starting_position_y >> starting_position_angle >> left_motor_inverted >> right_motor_inverted;
-	Robot robot(motors.at(0), motors.at(3), motors.at(1), motors.at(2), sensors.at(0), base_width, wheel_diameter, left_motor_inverted, right_motor_inverted, Position(starting_position_x, starting_position_y, starting_position_angle));
+	// wait for finger to be far away from robot
+	std::this_thread::sleep_for(std::chrono::microseconds(200));
 
-	configuration_file.close();
 	robot.follow_program("program_1.prgm");
 
 	return 0;
