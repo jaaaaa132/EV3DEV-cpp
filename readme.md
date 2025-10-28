@@ -13,3 +13,6 @@
 ## - angle zero is at Y axis
 ## - angle is in rad
 ## - angle goes counter clockwise (left is positive, right negative)
+
+# Costume programing language
+## - for send file feature ```sshpass``` and ```shh``` has to be installed
