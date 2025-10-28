@@ -13,6 +13,7 @@ void Motor::open_files(){
   position_file.open(std::string("/sys/class/tacho-motor/")     + directory + std::string("/position"));
   position_sp_file.open(std::string("/sys/class/tacho-motor/")  + directory + std::string("/position_sp"),  std::fstream::out);
   acceleration_file.open(std::string("/sys/class/tacho-motor/") + directory + std::string("/ramp_up_sp"),   std::fstream::out);
+  deacceleration_file.open(std::string("/sys/class/tacho-motor/") + directory + std::string("/ramp_down_sp"),   std::fstream::out);
   stop_action_file.open(std::string("/sys/class/tacho-motor/")  + directory + std::string("/stop_action"),  std::fstream::out);
   command_file.open(std::string("/sys/class/tacho-motor/")      + directory + std::string("/command"),      std::fstream::out);
   duty_cycle_file.open(std::string("/sys/class/tacho-motor/")   + directory + std::string("/duty_cycle_sp"),std::fstream::out);
@@ -44,6 +45,7 @@ bool Motor::are_files_opened(){
           check_file(position_file, "position_file") &&
           check_file(position_sp_file, "position_sp_file") &&
           check_file(acceleration_file, "acceleration_file") &&
+          check_file(deacceleration_file, "deacceleration_file") &&
           check_file(stop_action_file, "stop_action_file") &&
 	        check_file(command_file, "command_file") &&	
           check_file(duty_cycle_file, "duty_cycle_file") &&
@@ -124,7 +126,7 @@ void Motor::run(int speed, int acceleration){
 	command_file.flush();
 }
 
-void Motor::run_to_abs_pos(int position, int speed, std::string stop_action){
+void Motor::run_to_abs_pos(int position, int speed, std::string stop_action, int acceleration, int deacceleration){
   if(!are_files_opened()){
     open_files();
 		if(!are_files_opened()) throw std::runtime_error("cann't open files from: " + directory);
@@ -137,10 +139,14 @@ void Motor::run_to_abs_pos(int position, int speed, std::string stop_action){
 	speed_file.flush();
   stop_action_file << stop_action;
   stop_action_file.flush();
+  acceleration_file << std::to_string(acceleration);
+	acceleration_file.flush();
+  deacceleration_file << std::to_string(deacceleration);
+	deacceleration_file.flush();
 	command_file << "run-to-abs-pos";
 	command_file.flush();
 }
-void Motor::run_to_rel_pos(int position, int speed, std::string stop_action){
+void Motor::run_to_rel_pos(int position, int speed, std::string stop_action, int acceleration, int deacceleration){
   if(!are_files_opened()){
     open_files();
 		if(!are_files_opened()) throw std::runtime_error("cann't open files from: " + directory);
@@ -153,11 +159,15 @@ void Motor::run_to_rel_pos(int position, int speed, std::string stop_action){
 	speed_file.flush();
   stop_action_file << stop_action;
   stop_action_file.flush();
+  acceleration_file << std::to_string(acceleration);
+	acceleration_file.flush();
+  deacceleration_file << std::to_string(deacceleration);
+	deacceleration_file.flush();
 	command_file << "run-to-rel-pos";
 	command_file.flush();
 }
 
-void Motor::run_for_time(int time_ms, int speed, std::string stop_action){
+void Motor::run_for_time(int time_ms, int speed, std::string stop_action, int acceleration, int deacceleration){
  if(!are_files_opened()){
     open_files();
 		if(!are_files_opened()) throw std::runtime_error("cann't open files from: " + directory);
@@ -170,6 +180,10 @@ void Motor::run_for_time(int time_ms, int speed, std::string stop_action){
 	speed_file.flush();
   stop_action_file << stop_action;
   stop_action_file.flush();
+  acceleration_file << std::to_string(acceleration);
+	acceleration_file.flush();
+  deacceleration_file << std::to_string(deacceleration);
+	deacceleration_file.flush();
 	command_file << "run-timed";
 	command_file.flush(); 
 }

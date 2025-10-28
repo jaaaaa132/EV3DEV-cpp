@@ -203,8 +203,8 @@ void Diferential_drive::go_to_position_straight(Position target_position, float 
   }
   float target_distance = sqrt(pow(target_position.x - position.x, 2) + pow(target_position.y - position.y, 2)) * (backwards ? -1 : 1);
   float target_distance_wheele_deg = target_distance / wheel_circumference * 360;
-  left_motor->run_to_rel_pos(target_distance_wheele_deg * (left_motor_inverted ? -1 : 1), max_motor_speed * 10.5);
-  right_motor->run_to_rel_pos(target_distance_wheele_deg * (right_motor_inverted ? -1 : 1), max_motor_speed * 10.5);
+  left_motor->run_to_rel_pos(target_distance_wheele_deg * (left_motor_inverted ? -1 : 1), max_motor_speed * 10.5, "hold", 1000, 1000);
+  right_motor->run_to_rel_pos(target_distance_wheele_deg * (right_motor_inverted ? -1 : 1), max_motor_speed * 10.5, "hold", 1000, 1000);
   //std::cout << (target_distance_wheele_deg * (right_motor_inverted ? -1 : 1)) << std::endl;
   left_motor->wait_for_stop();
   right_motor->wait_for_stop();
