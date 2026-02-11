@@ -9,6 +9,7 @@
 #include <thread>
 #include <vector>
 #include <experimental/filesystem>
+#include <cstdint>
 
 void Motor::open_files(){
 	speed_file =          open((std::string("/sys/class/tacho-motor/") + directory + std::string("/speed_sp")).c_str(),      O_WRONLY);
@@ -34,10 +35,13 @@ static bool write_int_fd(int fd, const int value) {
     return n >= 0 && write_c_str(fd, tmp, (size_t)n);
 }
 
-static void read_fd(int fd, char* buf, size_t bufsize) {
-    lseek(fd, 0, SEEK_SET);
-    ssize_t n = read(fd, buf, bufsize - 1);
-    if (n >= 0) buf[n] = '\0';
+static bool read_fd(int fd, char* buf, size_t bufsize) {
+  ssize_t n = pread(fd, buf, bufsize - 1, 0);
+  if(n >= 0){
+    buf[n] = '\0';
+    return true;
+  }
+  else return false;
 }
 
 Motor::Motor(){
@@ -98,54 +102,115 @@ void Motor::set_directory(std::string p_directory){
 }
 
 void Motor::run(int speed, int acceleration){
-  for(int i  = 0; i < max_loop_count; i++){ if (
-    write_int_fd(acceleration_file, acceleration) &&
-	  write_int_fd(speed_file, speed) &&
-	  write_c_str(command_file, "run-forever", sizeof("run-forever"))
-  ){
-    return;
-  }
+  for(int i  = 0; i < max_loop_count; i++){ 
+    if(
+      write_int_fd(acceleration_file, acceleration) &&
+	    write_int_fd(speed_file, speed) &&
+	    write_c_str(command_file, "run-forever", sizeof("run-forever"))
+    ){
+      return;
+    }
   std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
 }
 
-void Motor::run_to_abs_pos(int position, int speed, const char* stop_action){  
-  write_int_fd(position_sp_file, position);
-	write_int_fd(speed_file, speed);
-  write_c_str(stop_action_file, stop_action, strlen((stop_action))+1);
-	write_c_str(command_file, "run-to-abs-pos", sizeof("run-to-abs-pos"));
+void Motor::run_to_abs_pos(int position, int speed, const char* stop_action){
+  for(int i  = 0; i < max_loop_count; i++){ 
+    if(
+      write_int_fd(position_sp_file, position) &&
+	    write_int_fd(speed_file, speed) &&
+      write_c_str(stop_action_file, stop_action, strlen((stop_action))+1) &&
+	    write_c_str(command_file, "run-to-abs-pos", sizeof("run-to-abs-pos"))
+    ){
+      return;
+    }
+  std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
 }
 void Motor::run_to_rel_pos(int position, int speed, const char* stop_action){
-  write_int_fd(position_sp_file, position);
-	write_int_fd(speed_file, speed);
-  write_c_str(stop_action_file, stop_action, strlen((stop_action))+1);
-	write_c_str(command_file, "run-to-rel-pos", sizeof("run-to-rel-pos"));
+  for(int i  = 0; i < max_loop_count; i++){ 
+    if(
+      write_int_fd(position_sp_file, position) &&
+	    write_int_fd(speed_file, speed) &&
+      write_c_str(stop_action_file, stop_action, strlen((stop_action))+1) &&
+	    write_c_str(command_file, "run-to-rel-pos", sizeof("run-to-rel-pos"))
+    ){
+      return;
+    }
+  std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
 }
 
 void Motor::run_for_time(int time_ms, int speed, const char* stop_action){
-  write_int_fd(time_file, time_ms);
-	write_int_fd(speed_file, speed);
-  write_c_str(stop_action_file, stop_action, strlen((stop_action))+1);
-  write_c_str(command_file, "run-timed", sizeof("run-timed"));
+  for(int i  = 0; i < max_loop_count; i++){ 
+    if(
+      write_int_fd(time_file, time_ms) &&
+	    write_int_fd(speed_file, speed) &&
+      write_c_str(stop_action_file, stop_action, strlen((stop_action))+1) &&
+      write_c_str(command_file, "run-timed", sizeof("run-timed"))
+    ){
+      return;
+    }
+  std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
 }
 
 void Motor::stop(const char* stop_action){
-  write_c_str(stop_action_file, stop_action, strlen((stop_action))+1);
-  write_c_str(command_file, "stop", sizeof("stop"));
+  for(int i  = 0; i < max_loop_count; i++){ 
+    if(
+      write_c_str(stop_action_file, stop_action, strlen((stop_action))+1) &&
+      write_c_str(command_file, "stop", sizeof("stop"))
+    ){
+      return;
+    }
+  std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
 }
 
 void Motor::run_direct(int duty_cycle, bool inverted){
-  if(inverted) write_c_str(polarity_file, "inversed", sizeof("inversed"));
-  else write_c_str(polarity_file, "normal", sizeof("normal"));
-  write_int_fd(duty_cycle_file, duty_cycle);
-  write_c_str(command_file, "run-direct", sizeof("run-direct"));
+  char t[9];
+  uint8_t len;
+  if(inverted) {
+    memcpy(t, "inversed",9);
+    len = 9;
+  }
+  else{
+    memcpy(t, "normal",7);
+    len = 7;
+  }
+  for(int i  = 0; i < max_loop_count; i++){ 
+    if(
+      write_c_str(polarity_file, t, len) &&
+      write_int_fd(duty_cycle_file, duty_cycle) &&
+      write_c_str(command_file, "run-direct", sizeof("run-direct"))
+    ){
+      return;
+    }
+  std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
 }
 
 void Motor::run_direct_for_time(int duty_cycle, int time_ms, bool inverted, const char* stop_action){
-  if(inverted) write_c_str(polarity_file, "inversed", sizeof("inversed"));
-  else write_c_str(polarity_file, "normal", sizeof("normal"));
-  write_int_fd(duty_cycle_file, duty_cycle);
-  write_c_str(command_file, "run-direct", sizeof("run-direct"));
+  char text[9];
+  uint8_t len;
+  if(inverted) {
+    memcpy(text, "inversed",9);
+    len = 9;
+  }
+  else{
+    memcpy(text, "normal",7);
+    len = 7;
+  }
+  for(int i  = 0; i < max_loop_count; i++){ 
+    if(
+      write_c_str(polarity_file, text, len) &&
+      write_int_fd(duty_cycle_file, duty_cycle) &&
+      write_c_str(command_file, "run-direct", sizeof("run-direct"))
+    ){
+      return;
+    }
+  std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
 
   std::thread t([this, time_ms, stop_action]() {
     std::this_thread::sleep_for(std::chrono::milliseconds(time_ms));
@@ -156,18 +221,24 @@ void Motor::run_direct_for_time(int duty_cycle, int time_ms, bool inverted, cons
 
 std::string Motor::get_state(){
   char state[50];
-  read_fd(state_file, state, sizeof(state));
-  return state;
+  for(int i  = 0; i < max_loop_count; i++) 
+    if(read_fd(state_file, state, sizeof(state)))
+      return state;
+  return state; // unknown output
 }
 
 int Motor::get_position(){
-  char pos[50];
-  read_fd(position_file, pos, sizeof(pos));
-  return atoi(pos);
+  char pos[8];
+  for(int i  = 0; i < max_loop_count; i++) 
+    if(read_fd(position_file, pos, sizeof(pos))) 
+      return atoi(pos); 
+  return atoi(pos); // unknown output
 }
 
 void Motor::set_position(int new_position){
-  write_int_fd(position_file, new_position);
+  for(int i  = 0; i < max_loop_count; i++) 
+    if(write_int_fd(position_file, new_position))
+      return;
 }
 
 void Motor::wait_for_stop(){
