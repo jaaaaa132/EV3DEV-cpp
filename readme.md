@@ -22,7 +22,7 @@
 # Positioning
 ### - angle zero is at Y axis
 ### - angle is in rad
-### - angle goes counter clockwise (left is positive, right negative)
+### - angle goes counterclockwise (left is positive, right negative)
 # Costume programing language
 ### - for send file feature on linux `sshpass` and `ssh` has to be installed, for Windows `putty` has to be installed
 ### - supports English and Slovak
