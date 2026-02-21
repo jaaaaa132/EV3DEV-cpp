@@ -1,3 +1,6 @@
+# Other languages
+[Slovak/slovenčina](readme_SK.md)
+
 # Setup
 1. Setup microSD card: https://www.ev3dev.org/docs/getting-started/
 2. Download and move main files onto a SD card to  partition `ROOTFS` and `/home/robot/libc++/` directory
