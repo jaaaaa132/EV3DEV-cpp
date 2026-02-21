@@ -1,0 +1,30 @@
+PRÍRUČKA M++
+Úvod: 
+M++ je programovací editor založený na systéme blokov. Príkazy sú graficky zobrazené vo forme blokov, ktoré do seba zapadajú ako skladačka. Je vytvorený pre lego ev3, v programovacom engine godot pomocou c++. Je vytvorený Slovenským programátorom Martinom Slavkovským.
+Spustenie: 
+Ako prvú vec pri spustení je treba vybrať jazyk ktorý chcete používať. Momentálne je dostupná Angličtina a Slovenčina. Potom treba vybrať plochu na ktorej chcete robota používať a udať jej rozmery. Stlačte uložiť a teraz by sa vám malo zobraziť celé programovacie prostredie. Pri prvom spustení treba ešte doplniť konštanty robota v pravom hornom rohu. Tie tiež nezabudnite uložiť a poslať na robota. 
+Rozhranie: 
+Rozhranie M++ je podobné ako pri iných grafických jazykoch či editoroch, ako Scratch, či Lego Education Spike. Poťme ale po poradí.  V ľavom hornom rohu sa nachádza tlačidlo uložiť (program), a načítať (program). Pod nimi sa nachádza zoznam všetkých blokov, vo forme obdĺžnikov. V strede hore sa  nachádza tlačidlo poslať do robota, keď naň kliknete budete musieť najprv vybrať súbor v ktorom máte program uložený (varovanie program vždy pred poslaním do robota uložte) a ip addresu robota ktoru mozete najst v lavom hornom rohu obrazovky na robotovy. A v pravom hornom rohu sa nachádzajú už spomenuté konštanty robota, v ktorých musíte nastaviť také veci ako šírka robota, obvod kolies, či začiatočnú pozíciu. Všetko medzi tým je miesto na programovanie v ktorom sa nachádza začiatočný blok programu. 
+Typy:
+Tu je pár typov ktoré vám pomôžu v M ++ robiť. 
+Program vykoná a uloží iba to, čo je pripojené pod hlavným začiatočným blokom „začiatok“. 
+Ak nejaké bloky chcete vyhodiť (odstrániť z programu) presuňte ich na ľavú stranu obrazovky, medzi bloky. 
+Program vždy ukladajte(ctrl + S) (je to stále iba Alfa verzia)
+Ak neviete aká hodnota patrí do políčka tak nad ním podržte mišku a zobrazí sa vám nápoveda.
+Výhoda M++ je práve v blokoch ktoré umožňujú presné koordinovanie robota. Ako choď na pozíciu. 
+
+Výpis blokov a ich funkcií:
+Komentár –  Najdôležitejší blok, slúži na sarkastické komentovanie toho ako je užitočný. 
+Choď na pozíciu priamo  - robot pôjde na súradnicu predvolenej mapy ktorú ste už zadali. Ďalej je do tohto bloku  zadať presnosť natocenia(rad) a rýchlosť(0-100) z akou chcete aby robot išiel na zadanú pozíciu. 
+Choď krivkou na – niečo ako choď na pozíciu priamo ale robot pôjde krivkou(presnost je v cm). 
+Choď ako tank zo silou – Robot sa podľa nastavení v bloku, ako rýchlosť ľavého kolesa, rýchlosť pravého kolesa a čas po ktorý má ísť, posunie. A potom treba nastaviť typ zastavenia robota. Možnosti sú : drž, brzdi, alebo voľnobeh. 
+Natoč sa na uhol – Robot sa natočí na uhol podľa zadaných možností. Na aký uhol (v radiánoch), z akou presnosťou a ako rýchlo(0-100).
+Natoč sa na – Natočí sa na zadanú poziciu, zadanou presnosťou(rad), a rýchlosťou(0-100). Dokonca je voliteľný aj ofset uhla. 
+Spusti rameno – Začne otáčať ramenom, zvolenou rýchlosťou(0-1054) a zrýchlením. 
+Natoč rameno na – Natočí rameno na vybraný uhol, zvolenou rýchlosťou(0-1054). Tiež je voliteľný typ zastavenia. 
+Natoč rameno o – Natočí rameno o daný uhol, zvolenou rýchlosťou(0-1054). Tiež je voliteľný typ zastavenia. 
+Spusti rameno na – je ako Spusti rameno, ale môžete si zvoliť ako dlho sa má rameno pohybovať. 
+Spusti rameno so silou – určíte silu ramena(0-1054)
+Počkaj na rameno – Kým sa hýbe rameno tak nespustí bloky pod sebou. 
+Zastav rameno – Zastaví dané rameno. 
+Reposition(prerátanie pozície) – Svoju pozíciu na mape nastaví na vami zvolenú. Keď je hodnota NAN tak hodnota zostane na pôvodnej hodnote.
