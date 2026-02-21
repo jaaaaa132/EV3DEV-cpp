@@ -23,7 +23,7 @@
 # vlastný programovací jazyk M++
 ### - pre posielanie súborov na  linuxe `sshpass` a `ssh` musý byť nainštalovaný, Pre Windows `putty` musý byť nainstalovaný
 ### - podporuje Anglictinu a Slovenčinu 
-### - Pre viac informácií si precitajte prirucka_m++.txt
+### - Pre viac informácií si precitajte [príručku pre M++](prirucka_m++.txt)
 # Nápomocné linky
 ### https://www.ev3dev.org/
 ### https://github.com/ev3dev/ev3dev/issues/1032
