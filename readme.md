@@ -26,7 +26,7 @@
 # Costume programing language
 ### - for send file feature on linux `sshpass` and `ssh` has to be installed, for Windows `putty` has to be installed
 ### - supports English and Slovak
-### - for more information read prirucka_m++.txt, for now it is only in Slovak
+### - for more information read [príručka M++](prirucka_m++.txt), for now it is only in Slovak
 # Helpful links
 ### https://www.ev3dev.org/
 ### https://github.com/ev3dev/ev3dev/issues/1032
