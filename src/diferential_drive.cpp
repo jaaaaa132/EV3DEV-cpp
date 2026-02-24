@@ -208,7 +208,7 @@ void Diferential_drive::rotate_to_abs_angle(float angle, float precision, int ma
     int speed = std::fmin(1, std::fmax(-1, angle_dif * P_const));
     left_motor->run_direct(fmax(abs(speed) * max_speed, min_speed), left_motor_inverted ? !(speed < 0) : speed < 0);
     right_motor->run_direct(fmax(abs(speed) * max_speed, min_speed), !right_motor_inverted ? !(speed < 0) : speed < 0);
-    std::this_thread::sleep_for(std::chrono::microseconds(400)); // same as in position tracking
+    std::this_thread::sleep_for(std::chrono::microseconds(1000)); // same as in position tracking
     angle_dif = normalize_angle(position.angle - angle);
   }
 
