@@ -49,7 +49,7 @@ void Diferential_drive::track_position(){
     int16_t left_motor_pos_dif = (left_motor_pos - left_motor_last_pos) * (left_motor_inverted ? -1 : 1);
     int16_t right_motor_pos_dif = (right_motor_pos - right_motor_last_pos) * (right_motor_inverted ? -1 : 1);
     if(right_motor_pos_dif == 0 && left_motor_pos_dif == 0) {
-      std::this_thread::sleep_for(std::chrono::microseconds(200)); 
+      std::this_thread::sleep_for(std::chrono::microseconds(500)); 
       continue;
     }
     float left_wheel_dist = wheel_circumference * left_motor_pos_dif / 360;
@@ -67,7 +67,7 @@ void Diferential_drive::track_position(){
     left_motor_last_pos = left_motor_pos;
     right_motor_last_pos = right_motor_pos;
     //angle_last = angle_gyro;
-    std::this_thread::sleep_for(std::chrono::microseconds(400)); 
+    std::this_thread::sleep_for(std::chrono::microseconds(1000)); 
   }
 }
 
