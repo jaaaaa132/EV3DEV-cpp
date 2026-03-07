@@ -1,7 +1,7 @@
 # Príprava pred používaním
 1. Nastavte microSD kartu pomocou: https://www.ev3dev.org/docs/getting-started/
 2. Stiahnite a presunte main subory na SD kartu do  particie `ROOTFS` a priečinku `/home/robot/libc++/`
-3. Na Windows nainštalujte  `putty` a na Linuxe `shh` a  `sshpass`
+3. Na Windows nainštalujte  `putty`(pscp.exe musý byť v tom istom súbore ako executable nášho vlastného programovacieho jazyka) a na Linuxe `shh` a  `sshpass`
 4. Stiahnite náš vlastný programovací jazyk (žiadna inštalácia není potrebná)
 5. Všetko je pripravené na to aby ste začali programovať, PS: nezabudnite nastaviť konštanty robota
 
@@ -22,7 +22,7 @@
 ### - uhol je v rad
 ### - uhol ide v protismere hodinových ručičiek (vľavo je kladné,vpravo je záporné)
 # vlastný programovací jazyk M++
-### - pre posielanie súborov na  linuxe `sshpass` a `ssh` musý byť nainštalovaný, Pre Windows `putty` musý byť nainstalovaný
+### - pre posielanie súborov na  linuxe `sshpass` a `ssh` musý byť nainštalovaný, Pre Windows `putty` musý byť nainstalovaný (pscp.exe musý byť v tom istom súbore ako executable nášho vlastného programovacieho jazyka)
 ### - podporuje Anglictinu a Slovenčinu 
 ### - Pre viac informácií si precitajte [príručku pre M++](prirucka_m++.txt)
 # Nápomocné linky
