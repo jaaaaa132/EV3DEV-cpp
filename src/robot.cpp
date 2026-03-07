@@ -3,8 +3,8 @@
 #include <string>
 #include <limits>
 
-Robot::Robot(Motor& p_left_arm, Motor& p_right_arm, Motor& p_left_motor, Motor& p_right_motor, Sensor& p_gyro, Sensor& p_color, float p_wheel_base_width, float p_wheel_circumference, bool p_left_motor_inverted, bool p_right_motor_inverted, Position starting_position):
-  Diferential_drive(p_left_motor, p_right_motor, p_gyro, p_color, p_wheel_base_width, p_wheel_circumference, p_left_motor_inverted, p_right_motor_inverted, starting_position),
+Robot::Robot(Motor& p_left_arm, Motor& p_right_arm, Motor& p_left_motor, Motor& p_right_motor, Sensor& p_gyro, Sensor& p_color_left, Sensor& p_color_right, float p_wheel_base_width, float p_wheel_circumference, bool p_left_motor_inverted, bool p_right_motor_inverted, Position starting_position):
+  Diferential_drive(p_left_motor, p_right_motor, p_gyro, p_color_left, p_color_right, p_wheel_base_width, p_wheel_circumference, p_left_motor_inverted, p_right_motor_inverted, starting_position),
   left_arm(&p_left_arm),
   right_arm(&p_right_arm){ 
 }

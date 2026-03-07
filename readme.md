@@ -18,7 +18,8 @@
 ### - right arm -> D
 ## sensor connections
 ### - gyro  -> 1
-### - color -> 2
+### - color left -> 2
+### - color right -> 3
 # Positioning
 ### - angle zero is at Y axis
 ### - angle is in rad

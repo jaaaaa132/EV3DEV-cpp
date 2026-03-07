@@ -37,7 +37,7 @@ static bool write_int_fd(int fd, const int value) {
 
 static bool read_fd(int fd, char* buf, size_t bufsize) {
   ssize_t n = pread(fd, buf, bufsize - 1, 0);
-  if(n >= 0){
+  if(__builtin_expect(n >= 0, 1)){
     buf[n] = '\0';
     return true;
   }
@@ -69,7 +69,7 @@ std::array<Motor, 4> Motor::find_motors(){
     std::string address_file_path = "/sys/class/tacho-motor/" + motor_directories.at(i) + "/address";
 		std::ifstream address_file;
 		address_file.open(address_file_path, std::fstream::in);
-		if(!address_file.is_open()){
+		if(__builtin_expect(!address_file.is_open(), 0)){
 			std::cout << "file could not be opened: " << address_file_path << std::endl;
 			std::cerr << "file could not be opened: " << address_file_path << std::endl;
 			continue;
@@ -103,10 +103,11 @@ void Motor::set_directory(std::string p_directory){
 
 void Motor::run(int speed, int acceleration){
   for(int i  = 0; i < max_loop_count; i++){ 
-    if(
+    if(__builtin_expect(
       write_int_fd(acceleration_file, acceleration) &&
 	    write_int_fd(speed_file, speed) &&
 	    write_c_str(command_file, "run-forever", sizeof("run-forever"))
+      , 1)
     ){
       return;
     }
@@ -116,11 +117,12 @@ void Motor::run(int speed, int acceleration){
 
 void Motor::run_to_abs_pos(int position, int speed, const char* stop_action){
   for(int i  = 0; i < max_loop_count; i++){ 
-    if(
+    if(__builtin_expect(
       write_int_fd(position_sp_file, position) &&
 	    write_int_fd(speed_file, speed) &&
       write_c_str(stop_action_file, stop_action, strlen((stop_action))+1) &&
 	    write_c_str(command_file, "run-to-abs-pos", sizeof("run-to-abs-pos"))
+      , 1)
     ){
       return;
     }
@@ -129,11 +131,12 @@ void Motor::run_to_abs_pos(int position, int speed, const char* stop_action){
 }
 void Motor::run_to_rel_pos(int position, int speed, const char* stop_action){
   for(int i  = 0; i < max_loop_count; i++){ 
-    if(
+    if(__builtin_expect(
       write_int_fd(position_sp_file, position) &&
 	    write_int_fd(speed_file, speed) &&
       write_c_str(stop_action_file, stop_action, strlen((stop_action))+1) &&
 	    write_c_str(command_file, "run-to-rel-pos", sizeof("run-to-rel-pos"))
+      , 1)
     ){
       return;
     }
@@ -143,11 +146,12 @@ void Motor::run_to_rel_pos(int position, int speed, const char* stop_action){
 
 void Motor::run_for_time(int time_ms, int speed, const char* stop_action){
   for(int i  = 0; i < max_loop_count; i++){ 
-    if(
+    if(__builtin_expect(
       write_int_fd(time_file, time_ms) &&
 	    write_int_fd(speed_file, speed) &&
       write_c_str(stop_action_file, stop_action, strlen((stop_action))+1) &&
       write_c_str(command_file, "run-timed", sizeof("run-timed"))
+      , 1)
     ){
       return;
     }
@@ -157,9 +161,10 @@ void Motor::run_for_time(int time_ms, int speed, const char* stop_action){
 
 void Motor::stop(const char* stop_action){
   for(int i  = 0; i < max_loop_count; i++){ 
-    if(
+    if(__builtin_expect(
       write_c_str(stop_action_file, stop_action, strlen((stop_action))+1) &&
       write_c_str(command_file, "stop", sizeof("stop"))
+      , 1)
     ){
       return;
     }
@@ -179,10 +184,11 @@ void Motor::run_direct(int duty_cycle, bool inverted){
     len = 7;
   }
   for(int i  = 0; i < max_loop_count; i++){ 
-    if(
+    if(__builtin_expect(
       write_c_str(polarity_file, t, len) &&
       write_int_fd(duty_cycle_file, duty_cycle) &&
       write_c_str(command_file, "run-direct", sizeof("run-direct"))
+      , 1)
     ){
       return;
     }
@@ -202,10 +208,11 @@ void Motor::run_direct_for_time(int duty_cycle, int time_ms, bool inverted, cons
     len = 7;
   }
   for(int i  = 0; i < max_loop_count; i++){ 
-    if(
+    if(__builtin_expect(
       write_c_str(polarity_file, text, len) &&
       write_int_fd(duty_cycle_file, duty_cycle) &&
       write_c_str(command_file, "run-direct", sizeof("run-direct"))
+      , 1)
     ){
       return;
     }
@@ -222,7 +229,7 @@ void Motor::run_direct_for_time(int duty_cycle, int time_ms, bool inverted, cons
 std::string Motor::get_state(){
   char state[50];
   for(int i  = 0; i < max_loop_count; i++) 
-    if(read_fd(state_file, state, sizeof(state)))
+    if(__builtin_expect(read_fd(state_file, state, sizeof(state)), 1))
       return state;
   return state; // unknown output
 }
@@ -230,7 +237,7 @@ std::string Motor::get_state(){
 int Motor::get_position(){
   char pos[8];
   for(int i  = 0; i < max_loop_count; i++) 
-    if(read_fd(position_file, pos, sizeof(pos))) 
+    if(__builtin_expect(read_fd(position_file, pos, sizeof(pos)), 1)) 
       return atoi(pos); 
   return atoi(pos); // unknown output
 }

@@ -18,7 +18,8 @@ class Diferential_drive {
     const bool left_motor_inverted;
     const bool right_motor_inverted;
     Sensor* const gyro;
-    Sensor* const color;
+    Sensor* const color_left;
+    Sensor* const color_right;
     const float wheel_base_width; // in cm
     const float wheel_circumference;   // in cm
     Position_atomic position;
@@ -29,7 +30,7 @@ class Diferential_drive {
     void track_position();
 
   public:
-    Diferential_drive(Motor& p_left_motor, Motor& p_right_motor, Sensor& p_gyro, Sensor& p_color, const float p_wheel_base_width, const float p_wheel_diameter, const bool p_left_motor_inverted = false, const bool p_right_motor_inverted = false, const Position starting_position = Position(0, 0, 0));
+    Diferential_drive(Motor& p_left_motor, Motor& p_right_motor, Sensor& p_gyro, Sensor& p_color_left, Sensor& p_color_right, const float p_wheel_base_width, const float p_wheel_diameter, const bool p_left_motor_inverted = false, const bool p_right_motor_inverted = false, const Position starting_position = Position(0, 0, 0));
     ~Diferential_drive();
 
     Position live_position();
@@ -40,7 +41,7 @@ class Diferential_drive {
     void move_tank_direct_timed(const int left_motor_speed, const int right_motor_speed, const int time_ms, const char* stop_action);
     void rotate_to_abs_angle(const float angle, const float precision, const int max_speed = 100);
     void rotate_to_position(const Position target, const float precision, const int max_speed = 100, const float offset = 0); // angle in position is ignored
-    void go_until_reflection(const int reflection, const bool darker, const int speed);
+    void go_until_reflection(const int reflection, const bool darker, const int speed); // reflection is in %
     void follow_path_curve(const std::string file_path, const float precision, const float angle_precision, const int max_speed = 100);
     void follow_path_straight(const std::string file_path, const float angle_precision, const int max_speed = 100);
 };

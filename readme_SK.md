@@ -15,7 +15,8 @@
 ### - práve koleso -> D
 ## Pripojenie Senzorov
 ### - gyro  -> 1
-### - farba -> 2
+### - farba lavá -> 2
+### - farba pravá -> 3
 # Pozicia
 ### - uhol 0 je na osi Y
 ### - uhol je v rad

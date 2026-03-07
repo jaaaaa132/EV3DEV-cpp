@@ -71,13 +71,14 @@ void Diferential_drive::track_position(){
   }
 }
 
-Diferential_drive::Diferential_drive(Motor& p_left_motor, Motor& p_right_motor, Sensor& p_gyro, Sensor& p_color, float p_wheel_base_width, float p_wheel_circumference, bool p_left_motor_inverted, bool p_right_motor_inverted, Position starting_position): 
+Diferential_drive::Diferential_drive(Motor& p_left_motor, Motor& p_right_motor, Sensor& p_gyro, Sensor& p_color_left, Sensor& p_color_right, float p_wheel_base_width, float p_wheel_circumference, bool p_left_motor_inverted, bool p_right_motor_inverted, Position starting_position): 
   left_motor(&p_left_motor),
   right_motor(&p_right_motor), 
   left_motor_inverted(p_left_motor_inverted),      
   right_motor_inverted(p_right_motor_inverted),
   gyro(&p_gyro),
-  color(&p_color),
+  color_left(&p_color_left),
+  color_right(&p_color_right),
   wheel_base_width(p_wheel_base_width),
   wheel_circumference(p_wheel_circumference){
       
@@ -85,6 +86,8 @@ Diferential_drive::Diferential_drive(Motor& p_left_motor, Motor& p_right_motor, 
   left_motor->set_position(100000);  // large value so tracking would work with run_direct
   right_motor->set_position(100000); // only 6 characters to leave space for \0
   gyro->set_mode("GYRO-ANG");
+  color_left->set_mode("COL-REFLECT");
+  color_right->set_mode("COL-REFLECT");
   tracking_position.store(true);
   position_tracker = std::thread(&Diferential_drive::track_position, this);
 }
@@ -226,13 +229,48 @@ void Diferential_drive::rotate_to_position(Position target, float precision, int
 void Diferential_drive::go_until_reflection(int reflection, bool darker, int speed){
   left_motor->run(speed, 10);
   right_motor->run(speed, 10);
+  bool left_motor_stopped = false, right_motor_stopped = false;
+
   while(true){
-    if((color->get_value(0) < reflection && darker) || (color->get_value(0) > reflection && !darker)){
-      left_motor->stop("brake");
-      right_motor->stop("brake");
+    // handle full sensor disconect is_connected doesnt register disconects
+    if(__builtin_expect(!color_left->is_connected() && !color_right->is_connected(), 0)){
+      std::cout << "error in go_until_reflection no color sensor is connected" << std::endl;
+      std::cerr << "error in go_until_reflection no color sensor is connected" << std::endl;
       break;
     }
-    else std::this_thread::sleep_for(std::chrono::microseconds(200));
+
+    // handle partial disconect
+    else if(__builtin_expect(!color_left->is_connected(), 0)){
+      if((color_right->get_value(0) < reflection && darker) || (color_right->get_value(0) > reflection && !darker)){
+        right_motor->stop("brake");
+        left_motor->stop("brake");
+      }
+      std::cout << "error in go_until_reflection left color sensor is not connected" << std::endl;
+      std::cerr << "error in go_until_reflection left color sensor is not connected" << std::endl;
+      break;
+    }
+    else if(__builtin_expect(!color_right->is_connected(), 0)){
+      if((color_left->get_value(0) < reflection && darker) || (color_left->get_value(0) > reflection && !darker)){
+        right_motor->stop("brake");
+        left_motor->stop("brake");
+      }
+      std::cout << "error in go_until_reflection right color sensor is not connected" << std::endl;
+      std::cerr << "error in go_until_reflection right color sensor is not connected" << std::endl;
+      break;
+    }
+
+    // normal operation with angle alingment
+    if((color_left->get_value(0) < reflection && darker) || (color_left->get_value(0) > reflection && !darker)){
+      left_motor->stop("brake");
+      left_motor_stopped = true;
+    }
+    if((color_right->get_value(0) < reflection && darker) || (color_right->get_value(0) > reflection && !darker)){
+      right_motor->stop("brake");
+      right_motor_stopped = true;
+    }
+
+    std::this_thread::sleep_for(std::chrono::microseconds(1000));
+    if(left_motor_stopped && right_motor_stopped) break;
   }
 }
 
