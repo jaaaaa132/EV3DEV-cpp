@@ -4,7 +4,7 @@
 # Setup
 1. Setup microSD card: https://www.ev3dev.org/docs/getting-started/
 2. Download and move main files onto a SD card to  partition `ROOTFS` and `/home/robot/libc++/` directory
-3. Install `putty` for Windows and `shh`, `sshpass` for linux
+3. Install `putty` for Windows(pscp.exe has to be in same directory as costume programing language) and `shh`, `sshpass` for linux
 4. Download costume programing language(no installation required)
 5. You are ready to use everything and have fun, PS: do not forget to send robot constants
 
@@ -25,7 +25,7 @@
 ### - angle is in rad
 ### - angle goes counterclockwise (left is positive, right negative)
 # Costume programing language
-### - for send file feature on linux `sshpass` and `ssh` has to be installed, for Windows `putty` has to be installed
+### - for send file feature on linux `sshpass` and `ssh` has to be installed, for Windows `putty` has to be installed (pscp.exe has to be in same directory as costume programing language)
 ### - supports English and Slovak
 ### - for more information read [príručka M++](prirucka_m++.txt), for now it is only in Slovak
 # Helpful links
