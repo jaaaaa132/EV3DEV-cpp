@@ -91,7 +91,7 @@ int main (){
 	run++;
 	std::fstream("runs.txt", std::ios::out | std::ios::trunc) << run;
 	
-	std::fstream configuration_file("robot_1.conf");
+	std::fstream configuration_file("robot_2.conf");
 	float base_width, wheel_diameter, starting_position_x, starting_position_y, starting_position_angle;
 	bool left_motor_inverted, right_motor_inverted;
 	configuration_file >> base_width >> wheel_diameter >> starting_position_x >> starting_position_y >> starting_position_angle >> left_motor_inverted >> right_motor_inverted;
@@ -118,7 +118,7 @@ int main (){
 	// wait for finger to be far away from robot
 	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
-	robot.follow_program("program_1.prgm");
+	robot.follow_program("program_2.prgm");
 
 	return 0;
 }
