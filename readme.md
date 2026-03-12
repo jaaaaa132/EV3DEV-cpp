@@ -20,7 +20,7 @@
 - gyro  -> 1
 - color left -> 2
 - color right -> 3
-## Positioning
+### Positioning
 - angle zero is at Y axis
 - angle is in rad
 - angle goes counterclockwise (left is positive, right negative)
