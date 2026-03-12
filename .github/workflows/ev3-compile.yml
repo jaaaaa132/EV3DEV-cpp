@@ -1,0 +1,38 @@
+ ev3-compile.yml: name: ev3 compile
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t ev3dev-cpp-compiler .
+
+      - name: Make script executable
+        run: chmod +x ./compile_all.sh
+
+      - name: Run script (generates main1, main2, main3, main4, main5)
+        run: ./compile_all.sh
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: master-${{ github.sha }}
+          name: "Master Release ${{ github.sha }}"
+          files: |
+            main1
+            main2
+            main3
+            main4
+            main5
