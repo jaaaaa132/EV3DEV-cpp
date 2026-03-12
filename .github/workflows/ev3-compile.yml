@@ -1,4 +1,4 @@
- ev3-compile.yml: name: ev3 compile
+name: ev3 compile
 
 on:
   push:
