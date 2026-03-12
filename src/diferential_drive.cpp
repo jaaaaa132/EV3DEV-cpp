@@ -14,7 +14,7 @@ float Diferential_drive::normalize_angle(float angle){ // returns value in inter
 void Diferential_drive::track_position(){
   Position p_position = position;
   int left_motor_last_pos, right_motor_last_pos;
-  /*int angle_last;
+  int angle_last;
 
   if(gyro->is_connected()) angle_last = gyro->get_value(0);
   else{
@@ -22,7 +22,7 @@ void Diferential_drive::track_position(){
     std::cout << "gyro not connected" << std::endl;
 		std::cerr << "gyro not connected" << std::endl;
   }
- */
+ 
   try{
     left_motor_last_pos = abs(left_motor->get_position());
     right_motor_last_pos = abs(right_motor->get_position());
@@ -34,8 +34,8 @@ void Diferential_drive::track_position(){
 
   while(tracking_position.load()){
     int left_motor_pos, right_motor_pos;
-    //int angle_gyro;
-    //if(gyro->is_connected()) angle_gyro = gyro->get_value(0);
+	int angle_gyro;
+    if(gyro->is_connected()) angle_gyro = gyro->get_value(0);
     
     try{ 
       left_motor_pos = abs(left_motor->get_position());
@@ -56,8 +56,8 @@ void Diferential_drive::track_position(){
     float right_wheel_dist = wheel_circumference * right_motor_pos_dif / 360;
     float average_distance = (left_wheel_dist + right_wheel_dist) / 2;
     float orientation_dif;
-    //if(gyro->is_connected() && abs(angle_gyro - angle_last) > 3) orientation_dif = (float(angle_last) - float(angle_gyro)) / 180 * pi;  // WARNING gyro measures in deg
-    //else
+    if(gyro->is_connected() && abs(angle_gyro - angle_last) > 2) orientation_dif = (float(angle_last) - float(angle_gyro)) / 180 * pi;  // WARNING gyro measures in deg
+    else
     orientation_dif = (right_wheel_dist - left_wheel_dist) / wheel_base_width;
     p_position.x -= average_distance * sin(position.angle + orientation_dif / 2);
     p_position.y += average_distance * cos(position.angle + orientation_dif / 2);
@@ -66,7 +66,7 @@ void Diferential_drive::track_position(){
     position = p_position;
     left_motor_last_pos = left_motor_pos;
     right_motor_last_pos = right_motor_pos;
-    //angle_last = angle_gyro;
+    angle_last = angle_gyro;
     std::this_thread::sleep_for(std::chrono::microseconds(1000)); 
   }
 }
@@ -117,8 +117,8 @@ void Diferential_drive::reset_position(Position new_position){
 }
 
 void Diferential_drive::go_to_position_curve(Position target_position, float precision, int max_motor_speed, bool forward_only){
-  //std::chrono::steady_clock::time_point last_time_measurement = std::chrono::steady_clock::now();
-  //float last_goal_angle_diffrence = normalize_angle(atan2(Position(position).x - target_position.x, target_position.y - Position(position).y) - Position(position).angle);
+  std::chrono::steady_clock::time_point last_time_measurement = std::chrono::steady_clock::now();
+  float last_goal_angle_diffrence = normalize_angle(atan2(Position(position).x - target_position.x, target_position.y - Position(position).y) - Position(position).angle);
    
   while(true){
     float goal_distance = sqrt(pow(target_position.x - Position(position).x, 2) + pow(target_position.y - Position(position).y, 2));
@@ -128,13 +128,13 @@ void Diferential_drive::go_to_position_curve(Position target_position, float pre
     //std::cout << "distance dif: " << goal_distance << " angle dif: " << goal_angle_diffrence << " x: " << Position(position).x << " y: " << Position(position).y << " angle: " << Position(position).angle << "\n";
         
     // calculate time for PD
-    //std::chrono::steady_clock::time_point new_time_measurement = std::chrono::steady_clock::now();
-    //std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(new_time_measurement - last_time_measurement);
+    std::chrono::steady_clock::time_point new_time_measurement = std::chrono::steady_clock::now();
+    std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(new_time_measurement - last_time_measurement);
         
     const float P_angle_const = 2.5;
-    //const float D_angle_const = 0;
+    const float D_angle_const = 0.1;
     const float P_distance_const = 4.5;
-    float angular_modifier = 1 - fmin(1, fmax(0, abs(fmin(abs(goal_angle_diffrence),abs(pi - goal_angle_diffrence) + forward_only * 10) / (pi / 2) * P_angle_const /*+ (last_goal_angle_diffrence - goal_angle_diffrence) / time_span.count() * D_angle_const*/) / wheel_circumference * wheel_base_width));  
+    float angular_modifier = 1 - fmin(1, fmax(0, abs(fmin(abs(goal_angle_diffrence),abs(pi - goal_angle_diffrence) + forward_only * 10) / (pi / 2) * P_angle_const + (last_goal_angle_diffrence - goal_angle_diffrence) / time_span.count() * D_angle_const) / wheel_circumference * wheel_base_width));  
     float speed_modifier = fmin(1, fmax(0, goal_distance / P_distance_const * wheel_circumference));
         
     int left_motor_speed = max_motor_speed * speed_modifier, right_motor_speed = max_motor_speed * speed_modifier;
@@ -156,8 +156,8 @@ void Diferential_drive::go_to_position_curve(Position target_position, float pre
       std::cout << "rethrowing error from go_to_position_curve in Diferential_drive: " << error.what() << std::endl;
       throw error;
     }
-    //last_time_measurement = new_time_measurement;
-    //last_goal_angle_diffrence = goal_angle_diffrence;
+    last_time_measurement = new_time_measurement;
+    last_goal_angle_diffrence = goal_angle_diffrence;
   }
   
   try{
