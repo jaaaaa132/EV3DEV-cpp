@@ -78,6 +78,9 @@ void MainBlock::load(String path) {
             case 'P': // RotateToPosition block
                 block = ResourceLoader::get_singleton()->load("res://blocks/rotate_to_pos_block.tscn");
                 break;
+            case 'F': // GoUntilReflection block
+                block = ResourceLoader::get_singleton()->load("res://blocks/go_until_reflection.tscn");
+                break;
             case 'L':
             case 'R': // Arm blocks
                 switch(words[1][0]){
@@ -442,6 +445,50 @@ void ResetPositionBlock::set_parameters(PackedStringArray parameters) {
     x->set_text(parameters[0]);
     y->set_text(parameters[1]);
     angle->set_text(parameters[2]);
+}
+
+// GoUntilReflectionBlock
+void GoUntilReflectionBlock::_bind_methods(){
+
+}
+
+GoUntilReflectionBlock::GoUntilReflectionBlock(): Block() {
+    
+}
+
+GoUntilReflectionBlock::~GoUntilReflectionBlock() {
+    Block::~Block();
+}
+
+void GoUntilReflectionBlock::_ready() {
+    Block::_ready();
+
+    // getting block parameters
+    reflection = get_node<LineEdit>("Button/HBoxContainer/Reflection");
+    darker = get_node<CheckBox>("Button/HBoxContainer/Darker");
+    speed = get_node<LineEdit>("Button/HBoxContainer/Speed");
+}
+
+String GoUntilReflectionBlock::write() {
+    if(reflection == nullptr || darker == nullptr || speed == nullptr) {
+        UtilityFunctions::push_error("GoUntilReflectionBlock parameters not set correctly!");
+        return "error\n";
+    }
+    String command = "F " + reflection->get_text() + " " + (darker->is_pressed()? "1" : "0") + " " + speed->get_text() + "\n";
+    if (next != nullptr) command += next->write();
+    return command;
+}
+
+void GoUntilReflectionBlock::set_parameters(PackedStringArray parameters) {
+    if(parameters.size() < 3) return;
+    UtilityFunctions::print("Setting values for GoUntilReflectionBlock");
+    if(reflection == nullptr || darker == nullptr || speed == nullptr){
+        UtilityFunctions::push_error("GoUntilReflectionBlock parameters not set correctly!");
+        return;
+    }
+    reflection->set_text(parameters[0]);
+    darker->set_pressed(bool(parameters[1] == "1"));
+    speed->set_text(parameters[2]);
 }
 
 // ArmStopBlock

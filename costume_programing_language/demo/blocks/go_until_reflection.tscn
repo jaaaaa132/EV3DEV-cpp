@@ -1,18 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://b2e8xuihoderg"]
+[gd_scene load_steps=4 format=3 uid="uid://u7dv10o8gfva"]
 
-[ext_resource type="Theme" uid="uid://m1x1dnq04rcs" path="res://blocks/block_theme.tres" id="1_w232p"]
-[ext_resource type="Theme" uid="uid://bl1ypr528580u" path="res://blocks/block_theme_text.tres" id="2_h3f0k"]
+[ext_resource type="Theme" uid="uid://m1x1dnq04rcs" path="res://blocks/block_theme.tres" id="1_stukh"]
+[ext_resource type="Theme" uid="uid://bl1ypr528580u" path="res://blocks/block_theme_text.tres" id="2_1s1qk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_54lax"]
 
-[node name="Block" type="ResetPositionBlock"]
+[node name="Block" type="GoUntilReflectionBlock"]
 
 [node name="Button" type="Button" parent="."]
 self_modulate = Color(0.1173, 0.69, 0.4991, 1)
 custom_minimum_size = Vector2(0, 50)
-offset_right = 601.0
+offset_right = 521.0
 offset_bottom = 50.0
-theme = ExtResource("1_w232p")
+theme = ExtResource("1_stukh")
 alignment = 0
 icon_alignment = 1
 expand_icon = true
@@ -21,8 +21,11 @@ expand_icon = true
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.5
-anchor_right = 1.0
+anchor_right = 0.942
 anchor_bottom = 0.5
+offset_top = -18.0
+offset_right = -0.142029
+offset_bottom = 18.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 16
@@ -33,35 +36,31 @@ layout_mode = 2
 [node name="Name" type="Label" parent="Button/HBoxContainer"]
 custom_minimum_size = Vector2(225.785, 0)
 layout_mode = 2
-theme = ExtResource("2_h3f0k")
-text = "RESETPOSITION"
+theme = ExtResource("2_1s1qk")
+text = "GOUNTILREFLECTION"
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="X" type="LineEdit" parent="Button/HBoxContainer"]
+[node name="Reflection" type="LineEdit" parent="Button/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-tooltip_text = "x, in cm, NAN means keep original value"
+tooltip_text = "REFLECTION"
 theme_override_font_sizes/font_size = 20
-text = "NAN"
+text = "50"
 alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Y" type="LineEdit" parent="Button/HBoxContainer"]
-custom_minimum_size = Vector2(100, 0)
+[node name="Darker" type="CheckBox" parent="Button/HBoxContainer"]
 layout_mode = 2
-tooltip_text = "y, in cm, NAN means keep original value"
-theme_override_font_sizes/font_size = 20
-text = "NAN"
-alignment = 1
-metadata/_edit_use_anchors_ = true
+tooltip_text = "DARKER"
+flat = true
 
-[node name="Angle" type="LineEdit" parent="Button/HBoxContainer"]
+[node name="Speed" type="LineEdit" parent="Button/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-tooltip_text = "angle, in Rad, NAN means keep original value"
+tooltip_text = "SPEED"
 theme_override_font_sizes/font_size = 20
-text = "NAN"
+text = "1024"
 alignment = 1
 metadata/_edit_use_anchors_ = true
 

@@ -51,3 +51,10 @@ MOTORSINVERSED:,inversed motor:,opačný chod:
 LEFTMOTOR:,left motor:,lavý motor:
 RIGHTMOTOR:,right motor:,pravý motor:
 ANGLE:,angle:,uhol:
+SENDFILETOROBOT,send file to robot,poslať súbor na robota
+SEND,send,poslať
+PICKFILE,pick file,vybrať súbor
+IPADDRESS,IP address:,IP adressa:
+RESETPOSITION,reset position,resetuj pozíciu
+GOUNTILREFLECTION,go until reflection,choď do odrazu
+REFLECTION,"Reflection, 0←>100","Odraz, 0←>100"

@@ -160,6 +160,25 @@ public:
     void set_parameters(PackedStringArray parameters) override;
 };
 
+class GoUntilReflectionBlock : public Block {
+    GDCLASS(GoUntilReflectionBlock, Block)
+private:
+protected:
+    static void _bind_methods();
+    LineEdit *reflection = nullptr;
+    CheckBox *darker = nullptr;
+    LineEdit *speed = nullptr; 
+
+public:
+    GoUntilReflectionBlock();
+    ~GoUntilReflectionBlock();
+
+    void _ready() override;
+
+    String write() override;
+    void set_parameters(PackedStringArray parameters) override;
+};
+
 class ArmStopBlock : public Block {
     GDCLASS(ArmStopBlock, Block)
 private:
